@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Lentes Intraoculares</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 3px solid #3498db;
+            overflow: hidden;
+        }
+        
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+        }
+        
+        .header-text {
+            text-align: left;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        select, input {
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .search-box {
+            flex-grow: 1;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+        }
+        
+        .btn {
+            padding: 0.7rem 1.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-reset {
+            background: var(--accent);
+        }
+        
+        .btn-reset:hover {
+            background: #c0392b;
+        }
+        
+        .btn-view-single {
+            background: var(--success);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-view-single:hover {
+            background: #219652;
+        }
+
+        /* NUEVO ESTILO PARA EL BOTÓN DE GOOGLE */
+        .btn-google {
+            background: #4285f4;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-google:hover {
+            background: #3367d6;
+        }
+        
+        .btn-show-all {
+            background: var(--warning);
+            margin-left: 1rem;
+        }
+        
+        .btn-show-all:hover {
+            background: #e67e22;
+        }
+        
+        .lens-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .lens-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .lens-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header-selected {
+            background: var(--success) !important;
+        }
+        
+        .card-header-zeiss {
+            background: #8e44ad !important;
+        }
+        
+        .lens-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        
+        .lens-manufacturer {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .lens-id {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .header-left {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .specs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .spec-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .spec-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .spec-value {
+            font-weight: 600;
+            color: var(--dark);
+            text-align: right;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tag-monofocal { background: #e1f5fe; color: #01579b; }
+        .tag-multifocal { background: #e8f5e9; color: #1b5e20; }
+        .tag-toric { background: #fce4ec; color: #880e4f; }
+        .tag-edof { background: #fff3e0; color: #e65100; }
+        .tag-hydrophilic { background: #e3f2fd; color: #0d47a1; }
+        .tag-hydrophobic { background: #e8eaf6; color: #1a237e; }
+        .tag-yellow { background: #fff9c4; color: #f57f17; }
+        .tag-clear { background: #f5f5f5; color: #616161; }
+        .tag-preloaded { background: #e8f5e9; color: #1b5e20; }
+        .tag-foldable { background: #f3e5f5; color: #4a148c; }
+        
+        .constants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .constants-table th, .constants-table td {
+            padding: 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .constants-table th {
+            font-weight: 600;
+            color: var(--dark);
+            background: #f8f9fa;
+        }
+        
+        .constants-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .availability-section {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+        
+        .range-item {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+        }
+        
+        .results-count {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent);
+            background: #ffeaea;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .retry-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        
+        .single-lens-mode {
+            background: #e8f5e9;
+            border-left: 4px solid var(--success);
+        }
+        
+        .view-single-info {
+            background: #e8f4fd;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .zeiss-count {
+            background: #8e44ad;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .specs-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .header-right {
+                align-self: stretch;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .header-text {
+                text-align: center;
+            }
+            
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .logo-icon {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo con icono -->
+                <div class="logo">
+                    <div class="logo-icon">👁️</div>
+                </div>
+                
+                <div class="header-text">
+                    <h1>ACS - Lentes Intraoculares</h1>
+		    <h2>[Advance Clinical Service]</h2>
+                    <p class="subtitle">Base de datos extraida del IOLCon</p>
+			<div class="header-right">
+        			<p class="small-text">v.25.11.018 Created by Jose Díaz</p>
+    			</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="filters">
+            <div class="filter-group">
+                <label for="manufacturer">Fabricante</label>
+                <select id="manufacturer">
+                    <option value="">Todos los fabricantes</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="concept">Concepto Óptico</label>
+                <select id="concept">
+                    <option value="">Todos los tipos</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="toric">Tórico</label>
+                <select id="toric">
+                    <option value="">Todos</option>
+                    <option value="yes">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            
+            <div class="filter-group search-box">
+                <label for="search">Buscar por nombre o código</label>
+                <div class="search-input">
+                    <input type="text" id="search" placeholder="Ej: SN60WF, B1AB00, AcrySof..." style="width: 100%;">
+                </div>
+                <button class="btn" id="search-btn">🔍 Buscar</button>
+            </div>
+            
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-reset" id="reset-btn">🔄 Restablecer</button>
+            </div>
+        </div>
+        
+        <div class="results-count" id="results-count">
+            <div class="loading">🔄 Cargando datos desde GitHub...</div>
+        </div>
+
+        <div id="view-single-info" style="display: none;"></div>
+        
+        <div class="lens-list" id="lens-list"></div>
+        
+        <footer>
+            <p>Catálogo actualizado: 12 de mayo de 2025 | Datos cargados desde GitHub</p>
+        </footer>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN
+        const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/globalatsdr/IOLs-Database/refs/heads/main/IOLexport.xml';
+
+        // Variables globales
+        let allLenses = [];
+        let currentLenses = [];
+        let isSingleLensView = false;
+        let currentSingleLens = null;
+
+        // NUEVA FUNCIÓN: Buscar en Google
+        function searchLensOnGoogle(lensId) {
+            const lens = allLenses.find(l => l.id === lensId);
+            if (!lens) return;
+            
+            // Crear término de búsqueda con nombre y fabricante
+            const searchTerm = encodeURIComponent(`"${lens.name}" "${lens.manufacturer}" lente intraocular`);
+            const googleUrl = `https://www.google.com/search?q=${searchTerm}`;
+            
+            // Abrir en nueva pestaña
+            window.open(googleUrl, '_blank');
+        }
+
+        // Función principal de carga
+        async function loadLensesFromGitHub() {
+            try {
+                console.log('🔍 Iniciando carga desde:', GITHUB_RAW_URL);
+                
+                const response = await fetch(GITHUB_RAW_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const xmlText = await response.text();
+                console.log('✅ XML descargado correctamente');
+                
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                
+                return parseXMLToLenses(xmlDoc);
+                
+            } catch (error) {
+                console.error('❌ Error cargando datos:', error);
+                throw new Error(`No se pudo cargar el XML: ${error.message}`);
+            }
+        }
+
+        // Parsing del XML
+        function parseXMLToLenses(xmlDoc) {
+            const lenses = [];
+            const lensElements = xmlDoc.getElementsByTagName('Lens');
+            
+            console.log(`📊 Encontrados ${lensElements.length} lentes en el XML`);
+            
+            for (let i = 0; i < lensElements.length; i++) {
+                const lensElement = lensElements[i];
+                const lens = {
+                    id: lensElement.getAttribute('id') || `lens-${i}`,
+                    manufacturer: getText(lensElement, 'Manufacturer'),
+                    name: getText(lensElement, 'Name'),
+                    specifications: parseSpecifications(lensElement),
+                    availability: parseAvailability(lensElement),
+                    constants: parseConstants(lensElement)
+                };
+                lenses.push(lens);
+            }
+            
+            return lenses;
+        }
+
+        function parseSpecifications(lensElement) {
+            const specsElement = lensElement.getElementsByTagName('Specifications')[0];
+            if (!specsElement) return {};
+            
+            return {
+                singlePiece: getText(specsElement, 'SinglePiece'),
+                opticMaterial: getText(specsElement, 'OpticMaterial'),
+                foldable: getText(specsElement, 'Foldable'),
+                incisionWidth: getText(specsElement, 'IncisionWidth'),
+                hydro: getText(specsElement, 'Hydro'),
+                filter: getText(specsElement, 'Filter'),
+                refractiveIndex: getText(specsElement, 'RefractiveIndex'),
+                abbeNumber: getText(specsElement, 'AbbeNumber'),
+                opticDiameter: getText(specsElement, 'OpticDiameter'),
+                hapticDiameter: getText(specsElement, 'HapticDiameter'),
+                opticConcept: getText(specsElement, 'OpticConcept'),
+                hapticDesign: getText(specsElement, 'HapticDesign'),
+                intendedLocation: getText(specsElement, 'IntendedLocation'),
+                opticDesign: getText(specsElement, 'OpticDesign'),
+                aberration: getText(specsElement, 'Aberration'),
+                saCorrection: getText(specsElement, 'saCorrection'),
+                toric: getText(specsElement, 'Toric')
+            };
+        }
+
+        function parseAvailability(lensElement) {
+            const availabilityElement = lensElement.getElementsByTagName('Availability')[0];
+            if (!availabilityElement) return {};
+            
+            const sphereRanges = [];
+            const sphereElements = availabilityElement.getElementsByTagName('Sphere');
+            
+            for (let i = 0; i < sphereElements.length; i++) {
+                const sphereElement = sphereElements[i];
+                sphereRanges.push({
+                    from: parseFloat(getText(sphereElement, 'From')) || 0,
+                    to: parseFloat(getText(sphereElement, 'To')) || 0,
+                    increment: parseFloat(getText(sphereElement, 'Increment')) || 0
+                });
+            }
+            
+            const additionElement = availabilityElement.getElementsByTagName('Addition')[0];
+            const addition = additionElement ? additionElement.textContent : '';
+            
+            return { sphereRanges, addition };
+        }
+
+        function parseConstants(lensElement) {
+            const constants = {
+                nominal: parseConstantType(lensElement, 'nominal'),
+                optimized: parseConstantType(lensElement, 'optimized')
+            };
+            return constants;
+        }
+
+        function parseConstantType(lensElement, type) {
+            const constantElements = lensElement.getElementsByTagName('Constants');
+            for (let i = 0; i < constantElements.length; i++) {
+                const constantElement = constantElements[i];
+                if (constantElement.getAttribute('type') === type) {
+                    const haigisElement = constantElement.getElementsByTagName('Haigis')[0];
+                    const barrettElement = constantElement.getElementsByTagName('Barrett')[0];
+                    
+                    return {
+                        ultrasound: getText(constantElement, 'Ultrasound'),
+                        srkt: getText(constantElement, 'SRKt'),
+                        hofferQ: getText(constantElement, 'HofferQ'),
+                        holladay1: getText(constantElement, 'Holladay1'),
+                        haigis: haigisElement ? {
+                            a0: getText(haigisElement, 'a0'),
+                            a1: getText(haigisElement, 'a1'),
+                            a2: getText(haigisElement, 'a2')
+                        } : {},
+                        barrett: barrettElement ? {
+                            lf: getText(barrettElement, 'LF'),
+                            df: getText(barrettElement, 'DF')
+                        } : {},
+                        results: constantElement.getAttribute('results') || "0"
+                    };
+                }
+            }
+            return {};
+        }
+
+        function getText(parentElement, tagName) {
+            const element = parentElement.getElementsByTagName(tagName)[0];
+            return element ? element.textContent : '';
+        }
+
+        // Función para encontrar lentes Zeiss similares
+        function findSimilarZeissLenses(selectedLens) {
+            const specs = selectedLens.specifications;
+            
+            console.log('🔍 Buscando lentes Zeiss similares para:', selectedLens.name);
+            
+            const similarLenses = allLenses.filter(lens => {
+                if (lens.id === selectedLens.id) return false;
+                
+                const manufacturer = lens.manufacturer.toLowerCase();
+                if (!manufacturer.includes('zeiss')) return false;
+                
+                const lensSpecs = lens.specifications;
+                const sameOpticConcept = lensSpecs.opticConcept === specs.opticConcept;
+                const sameToric = lensSpecs.toric === specs.toric;
+                
+                return sameOpticConcept && sameToric;
+            });
+            
+            console.log(`🎯 Encontrados ${similarLenses.length} lentes Zeiss similares`);
+            return similarLenses;
+        }
+
+        // Función para crear tarjeta de lente (MODIFICADA para incluir botón de Google)
+        function createLensCard(lens) {
+            const card = document.createElement('div');
+            card.className = 'lens-card';
+            
+            let cardHeaderClass = '';
+            if (isSingleLensView) {
+                if (currentSingleLens && currentSingleLens.id === lens.id) {
+                    card.classList.add('single-lens-mode');
+                    cardHeaderClass = 'card-header-selected';
+                } else if (lens.manufacturer.toLowerCase().includes('zeiss')) {
+                    cardHeaderClass = 'card-header-zeiss';
+                }
+            }
+            
+            const tags = getTags(lens);
+            
+            card.innerHTML = `
+                <div class="card-header ${cardHeaderClass}">
+                    <div class="header-left">
+                        <div class="lens-name">${lens.name}</div>
+                        <div class="lens-manufacturer">${lens.manufacturer}</div>
+                    </div>
+                    <div class="header-right">
+                        <div class="lens-id">ID: ${lens.id}</div>
+                        ${!isSingleLensView ? 
+                            `<div>
+                                <button class="btn btn-view-single" onclick="viewSingleLens('${lens.id}')">
+                                    🔍 Comparar con Zeiss
+                                </button>
+                                <button class="btn btn-google" onclick="searchLensOnGoogle('${lens.id}')" title="Buscar en Web">
+                                    🔎 Web
+                                </button>
+                            </div>` : ''
+                        }
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="specs-container">
+                        <div>
+                            <div class="spec-section">
+                                <div class="section-title"><i>📋</i> Especificaciones</div>
+                                <div class="spec-grid">${renderSpecifications(lens.specifications)}</div>
+                                <div class="tags">${tags.join('')}</div>
+                            </div>
+                            <div class="spec-section">
+                                <div class="section-title"><i>📊</i> Disponibilidad</div>
+                                ${renderAvailability(lens.availability)}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="spec-section">
+                                <div class="section-title"><i>🧮</i> Constantes Nominales</div>
+                                ${renderConstants(lens.constants.nominal, 'nominal')}
+                            </div>
+                            ${lens.constants.optimized && lens.constants.optimized.results !== "0" ? `
+                            <div class="spec-section">
+                                <div class="section-title"><i>📈</i> Constantes Optimizadas</div>
+                                ${renderConstants(lens.constants.optimized, 'optimized')}
+                                <div class="spec-item">
+                                    <span class="spec-label">Resultados:</span>
+                                    <span class="spec-value">${lens.constants.optimized.results}</span>
+                                </div>
+                            </div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Función para ver un lente individual
+        function viewSingleLens(lensId) {
+            const lens = allLenses.find(l => l.id === lensId);
+            if (!lens) return;
+            
+            isSingleLensView = true;
+            currentSingleLens = lens;
+            const similarZeissLenses = findSimilarZeissLenses(lens);
+            currentLenses = [lens, ...similarZeissLenses];
+            
+            const viewSingleInfo = document.getElementById('view-single-info');
+            viewSingleInfo.innerHTML = `
+                <div class="view-single-info">
+                    <div>
+                        <strong>🔍 Vista de comparación:</strong> ${lens.manufacturer} - ${lens.name}
+                        <br><small><strong>Filtros requeridos:</strong> Concepto Óptico (${lens.specifications.opticConcept || 'N/A'}), Tórico (${lens.specifications.toric || 'N/A'})</small>
+                        ${similarZeissLenses.length > 0 ? 
+                            `<br><small><strong>${similarZeissLenses.length} lentes Zeiss similares encontrados</strong></small>` : 
+                            '<br><small><strong>No se encontraron lentes Zeiss con las mismas características</strong></small>'
+                        }
+                    </div>
+                    <button class="btn btn-show-all" onclick="showAllLenses()">📋 Ver todos</button>
+                </div>
+            `;
+            viewSingleInfo.style.display = 'block';
+            
+            // Deshabilitar filtros
+            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.disabled = true;
+            });
+            
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+
+        // Función para volver a ver todos los lentes
+        function showAllLenses() {
+            isSingleLensView = false;
+            currentSingleLens = null;
+            currentLenses = [...allLenses];
+            
+            document.getElementById('view-single-info').style.display = 'none';
+            
+            // Habilitar filtros
+            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.disabled = false;
+            });
+            
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+
+        // Funciones de renderizado
+        function getTags(lens) {
+            const tags = [];
+            const specs = lens.specifications;
+            
+            if (specs.opticConcept) {
+                tags.push(`<span class="tag tag-${specs.opticConcept}">${specs.opticConcept}</span>`);
+            }
+            if (specs.hydro) {
+                tags.push(`<span class="tag tag-${specs.hydro}">${specs.hydro}</span>`);
+            }
+            if (specs.filter === "yellow") {
+                tags.push(`<span class="tag tag-yellow">Filtro amarillo</span>`);
+            } else if (specs.filter === "clear") {
+                tags.push(`<span class="tag tag-clear">Filtro claro</span>`);
+            }
+            if (specs.foldable === "yes") {
+                tags.push(`<span class="tag tag-foldable">Plegable</span>`);
+            }
+            if (specs.toric === "yes") {
+                tags.push(`<span class="tag tag-toric">Tórico</span>`);
+            }
+            
+            return tags;
+        }
+
+        function renderSpecifications(specs) {
+            let html = '';
+            const labels = {
+                singlePiece: 'Una pieza', opticMaterial: 'Material óptico', foldable: 'Plegable',
+                incisionWidth: 'Ancho incisión (mm)', hydro: 'Hidrofobicidad', filter: 'Filtro',
+                refractiveIndex: 'Índice refracción', abbeNumber: 'Número Abbe', opticDiameter: 'Diámetro óptico (mm)',
+                hapticDiameter: 'Diámetro háptico (mm)', opticConcept: 'Concepto óptico', hapticDesign: 'Diseño háptico',
+                intendedLocation: 'Ubicación prevista', opticDesign: 'Diseño óptico', aberration: 'Aberración',
+                saCorrection: 'Corrección SA', toric: 'Tórico'
+            };
+            
+            for (const [key, value] of Object.entries(specs)) {
+                if (value && value !== '') {
+                    const label = labels[key] || key;
+                    html += `<div class="spec-item">
+                        <span class="spec-label">${label}:</span>
+                        <span class="spec-value">${value}</span>
+                    </div>`;
+                }
+            }
+            return html;
+        }
+
+        function renderAvailability(availability) {
+            if (!availability.sphereRanges || availability.sphereRanges.length === 0) {
+                return '<div>No disponible</div>';
+            }
+            
+            let html = '<div class="availability-section">';
+            availability.sphereRanges.forEach(range => {
+                html += `<div class="range-item"><strong>Esfera:</strong> ${range.from}D a ${range.to}D (inc: ${range.increment}D)</div>`;
+            });
+            if (availability.addition) {
+                html += `<div class="range-item"><strong>Addición:</strong> ${availability.addition}D</div>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function renderConstants(constants, type) {
+            if (!constants) return '<div>No disponible</div>';
+            
+            let hasData = false;
+            let html = '<table class="constants-table">';
+            
+            const basicConstants = [
+                { key: 'ultrasound', label: 'Ultrasound' },
+                { key: 'srkt', label: 'SRK/T' },
+                { key: 'hofferQ', label: 'Hoffer Q' },
+                { key: 'holladay1', label: 'Holladay 1' }
+            ];
+            
+            basicConstants.forEach(({ key, label }) => {
+                if (constants[key] && constants[key] !== '') {
+                    hasData = true;
+                    html += `<tr><td>${label}</td><td>${constants[key]}</td></tr>`;
+                }
+            });
+            
+            if (constants.haigis && constants.haigis.a0) {
+                hasData = true;
+                html += `
+                    <tr><td>Haigis a0</td><td>${constants.haigis.a0}</td></tr>
+                    <tr><td>Haigis a1</td><td>${constants.haigis.a1}</td></tr>
+                    <tr><td>Haigis a2</td><td>${constants.haigis.a2}</td></tr>
+                `;
+            }
+            
+            if (constants.barrett) {
+                if (constants.barrett.lf) {
+                    hasData = true;
+                    html += `<tr><td>Barrett LF</td><td>${constants.barrett.lf}</td></tr>`;
+                }
+                if (constants.barrett.df) {
+                    hasData = true;
+                    html += `<tr><td>Barrett DF</td><td>${constants.barrett.df}</td></tr>`;
+                }
+            }
+            
+            html += '</table>';
+            return hasData ? html : '<div>No disponible</div>';
+        }
+
+        // Función para actualizar contador
+        function updateResultsCount() {
+            const resultsCount = document.getElementById('results-count');
+            if (isSingleLensView) {
+                resultsCount.textContent = `🔍 Vista de comparación: ${currentLenses.length} lente(s) (1 seleccionado + ${currentLenses.length - 1} Zeiss similares)`;
+            } else {
+                resultsCount.textContent = `Mostrando ${currentLenses.length} lente(s) de ${allLenses.length}`;
+            }
+        }
+
+        // Función para renderizar lentes
+        function renderLenses(lensesToRender) {
+            const lensList = document.getElementById('lens-list');
+            lensList.innerHTML = '';
+            
+            if (lensesToRender.length === 0) {
+                lensList.innerHTML = '<div class="no-results">No se encontraron lentes</div>';
+                return;
+            }
+
+            lensesToRender.forEach(lens => {
+                lensList.appendChild(createLensCard(lens));
+            });
+        }
+
+        // Función para actualizar filtros
+        function updateFilters(lenses) {
+            const manufacturerSelect = document.getElementById('manufacturer');
+            const conceptSelect = document.getElementById('concept');
+            
+            const manufacturers = [...new Set(lenses.map(lens => lens.manufacturer))].sort();
+            const concepts = [...new Set(lenses.map(lens => lens.specifications.opticConcept).filter(Boolean))].sort();
+            
+            manufacturerSelect.innerHTML = '<option value="">Todos los fabricantes</option>';
+            conceptSelect.innerHTML = '<option value="">Todos los tipos</option>';
+            
+            manufacturers.forEach(manufacturer => {
+                manufacturerSelect.appendChild(new Option(manufacturer, manufacturer));
+            });
+            
+            concepts.forEach(concept => {
+                conceptSelect.appendChild(new Option(concept, concept));
+            });
+        }
+
+        // Función para filtrar lentes
+        function filterLenses() {
+            if (isSingleLensView) return;
+            
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const manufacturer = document.getElementById('manufacturer').value;
+            const concept = document.getElementById('concept').value;
+            const toric = document.getElementById('toric').value;
+
+            currentLenses = allLenses.filter(lens => {
+                if (searchTerm && !lens.name.toLowerCase().includes(searchTerm) && 
+                    !lens.manufacturer.toLowerCase().includes(searchTerm)) return false;
+                if (manufacturer && lens.manufacturer !== manufacturer) return false;
+                if (concept && lens.specifications.opticConcept !== concept) return false;
+                if (toric && lens.specifications.toric !== toric) return false;
+                return true;
+            });
+
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const lenses = await loadLensesFromGitHub();
+                allLenses = lenses;
+                currentLenses = [...lenses];
+                
+                updateFilters(lenses);
+                initializeApp();
+                
+                console.log('✅ Aplicación inicializada correctamente');
+                
+            } catch (error) {
+                document.getElementById('results-count').innerHTML = `
+                    <div class="error">
+                        ❌ Error: ${error.message}
+                        <br><button class="retry-btn" onclick="location.reload()">🔄 Reintentar</button>
+                    </div>
+                `;
+            }
+        });
+
+        function initializeApp() {
+            document.getElementById('search-btn').addEventListener('click', filterLenses);
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                document.getElementById('search').value = '';
+                document.getElementById('manufacturer').value = '';
+                document.getElementById('concept').value = '';
+                document.getElementById('toric').value = '';
+                filterLenses();
+            });
+
+            document.getElementById('search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') filterLenses();
+            });
+
+            document.getElementById('manufacturer').addEventListener('change', filterLenses);
+            document.getElementById('concept').addEventListener('change', filterLenses);
+            document.getElementById('toric').addEventListener('change', filterLenses);
+
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+    </script>
+</body>
+</html>

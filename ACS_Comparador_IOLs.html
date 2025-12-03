@@ -158,6 +158,16 @@
             background: #c0392b;
         }
         
+        /* NUEVO ESTILO PARA BOTÓN IOLCON */
+        .btn-iolcon {
+            background: #9b59b6;
+            padding: 0.7rem 1.5rem;
+        }
+        
+        .btn-iolcon:hover {
+            background: #8e44ad;
+        }
+        
         .btn-view-single {
             background: var(--success);
             padding: 0.4rem 0.8rem;
@@ -227,6 +237,27 @@
             background: #8e44ad !important;
         }
         
+        /* NUEVO ESTILO PARA CABECERA RECOMENDADA */
+        .card-header-recommended {
+            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header-recommended::after {
+            content: "⭐ RECOMENDADO";
+            position: absolute;
+            top: 5px;
+            right: -30px;
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 3px 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
         .lens-name {
             font-size: 1.5rem;
             font-weight: 700;
@@ -254,6 +285,38 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        /* NUEVO ESTILO PARA ETIQUETA RECOMENDADO */
+        .recommended-tag {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #2c3e50;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .recommended-tag i {
+            margin-right: 0.3rem;
+        }
+        
+        /* NUEVO ESTILO PARA INDICADOR DE SIMILITUD */
+        .match-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: #3498db;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
         }
         
         .card-body {
@@ -446,6 +509,36 @@
             margin-top: 2rem;
         }
         
+        /* NUEVOS ESTILOS PARA RESULTADOS CON COLORES */
+        .result-red {
+            background-color: #ffebee !important;
+            color: #c62828 !important;
+            border-left: 4px solid #f44336 !important;
+        }
+        
+        .result-yellow {
+            background-color: #fffde7 !important;
+            color: #f57f17 !important;
+            border-left: 4px solid #ffeb3b !important;
+        }
+        
+        .result-green {
+            background-color: #e8f5e9 !important;
+            color: #2e7d32 !important;
+            border-left: 4px solid #4caf50 !important;
+        }
+        
+        /* Mejorar visualización del item de resultados */
+        .spec-item.result-red,
+        .spec-item.result-yellow,
+        .spec-item.result-green {
+            font-weight: 600;
+            padding: 10px !important;
+            margin-top: 15px !important;
+            border-radius: 5px !important;
+            border-bottom: none !important;
+        }
+        
         @media (max-width: 768px) {
             .filters {
                 flex-direction: column;
@@ -505,6 +598,23 @@
             
             .logo-icon {
                 font-size: 2rem;
+            }
+            
+            /* Ajuste para etiqueta recomendado en móvil */
+            .card-header-recommended::after {
+                font-size: 0.6rem;
+                right: -35px;
+                padding: 2px 35px;
+            }
+            
+            .recommended-tag {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.6rem;
+            }
+            
+            .match-indicator {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.5rem;
             }
         }
     </style>
@@ -572,7 +682,11 @@
             
             <div class="filter-group">
                 <label>&nbsp;</label>
-                <button class="btn btn-reset" id="reset-btn">🔄 Restablecer</button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-reset" id="reset-btn">🔄 Restablecer</button>
+                    <!-- NUEVO BOTÓN IOLCON -->
+                    <button class="btn btn-iolcon" id="iolcon-btn" onclick="window.open('https://iolcon.org/lensesTable.php', '_blank')">🌐 IOLCon</button>
+                </div>
             </div>
         </div>
         
@@ -585,8 +699,8 @@
         <div class="lens-list" id="lens-list"></div>
         
         <footer>
-            <p>Catálogo actualizado: 12 de mayo de 2025 | Datos cargados desde bbdd Jd</p>
-	    <p class="small-text">v.25.11.018 Created by Jose Díaz</p>
+            <p>Catálogo actualizado: 03 de diciembre de 2025 | Datos cargados desde bbdd Jd</p>
+	    <p class="small-text">v.25.11.020 Created by Jose Díaz</p>
         </footer>
     </div>
 
@@ -599,6 +713,7 @@
         let currentLenses = [];
         let isSingleLensView = false;
         let currentSingleLens = null;
+        let recommendedZeissLenses = []; // NUEVA: Para guardar todas las lentes recomendadas
 
         // NUEVA FUNCIÓN: Buscar en Google
         function searchLensOnGoogle(lensId) {
@@ -750,7 +865,68 @@
             return element ? element.textContent : '';
         }
 
-        // Función para encontrar lentes Zeiss similares
+        // NUEVA FUNCIÓN: Extraer valor numérico de SA Correction
+        function extractSACorrectionValue(saCorrectionText) {
+            if (!saCorrectionText) return null;
+            
+            // Buscar números en el texto (ej: "0.27 µm", "0.27", "-0.11", "neutral", "correcting")
+            const lowercaseText = saCorrectionText.toLowerCase();
+            
+            // Primero verificar si es "neutral" o "correcting"
+            if (lowercaseText.includes('neutral')) return 0;
+            if (lowercaseText.includes('correcting')) return 0.27; // Valor por defecto para correcting
+            
+            // Buscar números
+            const match = saCorrectionText.match(/-?\d+\.?\d*/);
+            if (match) {
+                return parseFloat(match[0]);
+            }
+            return null;
+        }
+
+        // NUEVA FUNCIÓN: Encontrar todas las lentes Zeiss recomendadas
+        function findRecommendedZeissLenses(selectedLens, zeissLenses) {
+            if (!zeissLenses || zeissLenses.length === 0) return [];
+            
+            const selectedAberration = selectedLens.specifications.aberration;
+            const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
+            
+            if (!selectedAberration || selectedSAValue === null) return [];
+            
+            // Filtrar lentes con la misma aberración
+            const sameAberrationLenses = zeissLenses.filter(lens => {
+                const lensAberration = lens.specifications.aberration;
+                return lensAberration === selectedAberration;
+            });
+            
+            if (sameAberrationLenses.length === 0) return [];
+            
+            // Encontrar el valor de SA Correction más cercano
+            let closestValue = Infinity;
+            sameAberrationLenses.forEach(lens => {
+                const lensSAValue = extractSACorrectionValue(lens.specifications.saCorrection);
+                if (lensSAValue !== null) {
+                    const difference = Math.abs(lensSAValue - selectedSAValue);
+                    if (difference < closestValue) {
+                        closestValue = difference;
+                    }
+                }
+            });
+            
+            // Marcar como recomendadas las lentes con el SA Correction más cercano
+            const recommendedLenses = sameAberrationLenses.filter(lens => {
+                const lensSAValue = extractSACorrectionValue(lens.specifications.saCorrection);
+                if (lensSAValue === null) return false;
+                
+                const difference = Math.abs(lensSAValue - selectedSAValue);
+                // Considerar como "más próximo" si la diferencia es mínima
+                return Math.abs(difference - closestValue) < 0.001; // Tolerancia de 0.001
+            });
+            
+            return recommendedLenses;
+        }
+
+        // MODIFICADA: Función para encontrar lentes Zeiss similares
         function findSimilarZeissLenses(selectedLens) {
             const specs = selectedLens.specifications;
             
@@ -770,44 +946,85 @@
             });
             
             console.log(`🎯 Encontrados ${similarLenses.length} lentes Zeiss similares`);
+            
+            // Encontrar las lentes recomendadas
+            recommendedZeissLenses = findRecommendedZeissLenses(selectedLens, similarLenses);
+            console.log(`⭐ ${recommendedZeissLenses.length} lentes Zeiss RECOMENDADAS`);
+            
             return similarLenses;
         }
 
-        // Función para crear tarjeta de lente (MODIFICADA para incluir botón de Google)
+        // NUEVA FUNCIÓN: Verificar si una lente es recomendada
+        function isLensRecommended(lens) {
+            return recommendedZeissLenses.some(recLens => recLens.id === lens.id);
+        }
+
+        // NUEVA FUNCIÓN: Calcular diferencia de SA Correction
+        function calculateSADifference(selectedLens, zeissLens) {
+            const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
+            const zeissSAValue = extractSACorrectionValue(zeissLens.specifications.saCorrection);
+            
+            if (selectedSAValue === null || zeissSAValue === null) return null;
+            
+            return Math.abs(zeissSAValue - selectedSAValue);
+        }
+
+        // MODIFICADA: Función para crear tarjeta de lente - CON ETIQUETA RECOMENDADO
         function createLensCard(lens) {
             const card = document.createElement('div');
             card.className = 'lens-card';
             
             let cardHeaderClass = '';
+            let isRecommended = false;
+            let saDifference = null;
+            
             if (isSingleLensView) {
                 if (currentSingleLens && currentSingleLens.id === lens.id) {
                     card.classList.add('single-lens-mode');
                     cardHeaderClass = 'card-header-selected';
                 } else if (lens.manufacturer.toLowerCase().includes('zeiss')) {
                     cardHeaderClass = 'card-header-zeiss';
+                    
+                    // Verificar si es recomendada
+                    isRecommended = isLensRecommended(lens);
+                    
+                    if (isRecommended) {
+                        cardHeaderClass += ' card-header-recommended';
+                        // Calcular diferencia de SA Correction
+                        saDifference = calculateSADifference(currentSingleLens, lens);
+                    }
                 }
             }
             
             const tags = getTags(lens);
             
+            // MODIFICADO: El botón "Web" siempre está visible, incluso en vista de comparación
+            // Solo el botón "Comparar con Zeiss" se oculta en vista de comparación
+            const showCompareButton = !isSingleLensView;
+            
             card.innerHTML = `
                 <div class="card-header ${cardHeaderClass}">
                     <div class="header-left">
-                        <div class="lens-name">${lens.name}</div>
+                        <div class="lens-name">${lens.name} ${isRecommended ? '⭐' : ''}</div>
                         <div class="lens-manufacturer">${lens.manufacturer}</div>
                     </div>
                     <div class="header-right">
                         <div class="lens-id">ID: ${lens.id}</div>
-                        ${!isSingleLensView ? 
-                            `<div>
-                                <button class="btn btn-view-single" onclick="viewSingleLens('${lens.id}')">
-                                    🔍 Comparar con Zeiss
-                                </button>
-                                <button class="btn btn-google" onclick="searchLensOnGoogle('${lens.id}')" title="Buscar en Web">
-                                    🔎 Web
-                                </button>
-                            </div>` : ''
+                        ${isRecommended ? 
+                            `<div class="recommended-tag"><i>⭐</i> RECOMENDADO</div>` : 
+                            ''
                         }
+                        <div>
+                            ${showCompareButton ? 
+                                `<button class="btn btn-view-single" onclick="viewSingleLens('${lens.id}')">
+                                    🔍 Comparar con Zeiss
+                                </button>` : ''
+                            }
+                            <!-- BOTÓN "WEB" SIEMPRE VISIBLE -->
+                            <button class="btn btn-google" onclick="searchLensOnGoogle('${lens.id}')" title="Buscar en Web">
+                                🔎 Web
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -832,20 +1049,26 @@
                             <div class="spec-section">
                                 <div class="section-title"><i>📈</i> Constantes Optimizadas</div>
                                 ${renderConstants(lens.constants.optimized, 'optimized')}
-                                <div class="spec-item">
-                                    <span class="spec-label">Resultados:</span>
-                                    <span class="spec-value">${lens.constants.optimized.results}</span>
-                                </div>
                             </div>` : ''}
                         </div>
                     </div>
+                    ${isRecommended && saDifference !== null ? `
+                    <div style="background: #fffde7; padding: 0.8rem; border-radius: 5px; margin-top: 1rem; border-left: 4px solid #f1c40f;">
+                        <div style="font-weight: bold; color: #f57f17; margin-bottom: 0.3rem; display: flex; align-items: center;">
+                            <span style="margin-right: 0.5rem;">⭐</span> Coincidencia Óptima
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <strong>Aberración:</strong> ${currentSingleLens.specifications.aberration || 'N/A'} → ✅ Coincide exacta<br>
+                            <strong>SA Correction:</strong> Diferencia de ${saDifference.toFixed(3)} µm (más próximo encontrado)
+                        </div>
+                    </div>` : ''}
                 </div>
             `;
             
             return card;
         }
 
-        // Función para ver un lente individual
+        // MODIFICADA: Función para ver un lente individual
         function viewSingleLens(lensId) {
             const lens = allLenses.find(l => l.id === lensId);
             if (!lens) return;
@@ -853,6 +1076,7 @@
             isSingleLensView = true;
             currentSingleLens = lens;
             const similarZeissLenses = findSimilarZeissLenses(lens);
+            
             currentLenses = [lens, ...similarZeissLenses];
             
             const viewSingleInfo = document.getElementById('view-single-info');
@@ -860,11 +1084,16 @@
                 <div class="view-single-info">
                     <div>
                         <strong>🔍 Vista de comparación:</strong> ${lens.manufacturer} - ${lens.name}
-                        <br><small><strong>Filtros requeridos:</strong> Concepto Óptico (${lens.specifications.opticConcept || 'N/A'}), Tórico (${lens.specifications.toric || 'N/A'})</small>
+                        <br><small><strong>Filtros aplicados:</strong> Concepto Óptico (${lens.specifications.opticConcept || 'N/A'}), Tórico (${lens.specifications.toric || 'N/A'})</small>
                         ${similarZeissLenses.length > 0 ? 
-                            `<br><small><strong>${similarZeissLenses.length} lentes Zeiss similares encontrados</strong></small>` : 
-                            '<br><small><strong>No se encontraron lentes Zeiss con las mismas características</strong></small>'
+                            `<br><small><strong>${similarZeissLenses.length} lentes Zeiss encontrados</strong>` : 
+                            '<br><small><strong>No se encontraron lentes Zeiss con las mismas características</strong>'
                         }
+                        ${recommendedZeissLenses.length > 0 ? 
+                            ` - <strong style="color: #f39c12;">${recommendedZeissLenses.length} RECOMENDADAS</strong></small>` : 
+                            '</small>'
+                        }
+                        <br><small><strong>Criterio recomendación:</strong> Misma Aberración + SA Correction más próximo</small>
                     </div>
                     <button class="btn btn-show-all" onclick="showAllLenses()">📋 Ver todos</button>
                 </div>
@@ -872,7 +1101,7 @@
             viewSingleInfo.style.display = 'block';
             
             // Deshabilitar filtros
-            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn'].forEach(id => {
+            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn', 'iolcon-btn'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) element.disabled = true;
             });
@@ -885,12 +1114,13 @@
         function showAllLenses() {
             isSingleLensView = false;
             currentSingleLens = null;
+            recommendedZeissLenses = [];
             currentLenses = [...allLenses];
             
             document.getElementById('view-single-info').style.display = 'none';
             
             // Habilitar filtros
-            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn'].forEach(id => {
+            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn', 'iolcon-btn'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) element.disabled = false;
             });
@@ -964,6 +1194,7 @@
             return html;
         }
 
+        // MODIFICADA: Función renderConstants con colores según resultados
         function renderConstants(constants, type) {
             if (!constants) return '<div>No disponible</div>';
             
@@ -1005,6 +1236,28 @@
             }
             
             html += '</table>';
+            
+            // AGREGAR CONDICIONAL PARA RESULTADOS (solo para constantes optimizadas)
+            if (type === 'optimized' && constants.results) {
+                const resultsValue = parseInt(constants.results) || 0;
+                let colorClass = '';
+                
+                if (resultsValue <= 100) {
+                    colorClass = 'result-red';
+                } else if (resultsValue > 100 && resultsValue < 500) {
+                    colorClass = 'result-yellow';
+                } else if (resultsValue >= 500) {
+                    colorClass = 'result-green';
+                }
+                
+                html += `
+                    <div class="spec-item ${colorClass}" style="margin-top: 10px; padding: 8px; border-radius: 5px;">
+                        <span class="spec-label">Resultados:</span>
+                        <span class="spec-value" style="font-weight: bold;">${constants.results}</span>
+                    </div>
+                `;
+            }
+            
             return hasData ? html : '<div>No disponible</div>';
         }
 
@@ -1012,7 +1265,7 @@
         function updateResultsCount() {
             const resultsCount = document.getElementById('results-count');
             if (isSingleLensView) {
-                resultsCount.textContent = `🔍 Vista de comparación: ${currentLenses.length} lente(s) (1 seleccionado + ${currentLenses.length - 1} Zeiss similares)`;
+                resultsCount.textContent = `🔍 Vista de comparación: ${currentLenses.length} lente(s) (1 seleccionado + ${currentLenses.length - 1} Zeiss similares) - ${recommendedZeissLenses.length} RECOMENDADAS`;
             } else {
                 resultsCount.textContent = `Mostrando ${currentLenses.length} lente(s) de ${allLenses.length}`;
             }

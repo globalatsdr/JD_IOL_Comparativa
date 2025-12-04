@@ -52,6 +52,45 @@
             justify-content: center;
             gap: 1.5rem;
             flex-wrap: wrap;
+            position: relative;
+            padding-left: 80px; /* Espacio para el logo izquierdo */
+        }
+        
+        /* NUEVO: Logo personalizado en esquina izquierda */
+        .custom-logo {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 2px solid #3498db;
+            overflow: hidden;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+        
+        .custom-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .custom-logo .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+        
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3498db;
+            text-align: center;
         }
         
         .logo {
@@ -539,6 +578,64 @@
             border-bottom: none !important;
         }
         
+        /* NUEVOS ESTILOS PARA EL SWITCH DE PRIORIDAD */
+        .priority-switch-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #3498db;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #9b59b6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .switch-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
             .filters {
                 flex-direction: column;
@@ -585,10 +682,21 @@
                 flex-direction: column;
                 text-align: center;
                 gap: 1rem;
+                padding-left: 0;
             }
             
             .header-text {
                 text-align: center;
+            }
+            
+            /* Ajustes para logo personalizado en móvil */
+            .custom-logo {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 10px;
+                width: 50px;
+                height: 50px;
             }
             
             .logo {
@@ -616,6 +724,11 @@
                 font-size: 0.6rem;
                 padding: 0.15rem 0.5rem;
             }
+            
+            /* Ajuste para switch en móvil */
+            .priority-switch-container {
+                justify-content: center;
+            }
         }
     </style>
 <!-- Google tag (gtag.js) -->
@@ -631,17 +744,24 @@
 <body>
     <header>
         <div class="container">
+            <!-- NUEVO: Logo personalizado en esquina izquierda -->
+            <div class="custom-logo">
+                <!-- REEMPLAZA "tu_logo.png" CON LA RUTA DE TU LOGO -->
+                <img src="LogoJD.png" alt="Logo ACS" class="logo-img">
+                <!-- Si no tienes imagen, descomenta la siguiente línea -->
+                <!-- <div class="logo-text">ACS</div> -->
+            </div>
+            
             <div class="header-content">
-                <!-- Logo con icono -->
+                <!-- Logo con icono de ojo (existente) -->
                 <div class="logo">
                     <div class="logo-icon">👁️</div>
                 </div>
                 
                 <div class="header-text">
                     <h1>ACS - Lentes Intraoculares</h1>
-		    <h2>[Advance Clinical Service]</h2>
-                    <p class="subtitle">Base de datos extraida del IOLCon</p>
-			
+                    <h2>[Advance Clinical Service]</h2>
+                    <p class="subtitle">Constantes extraidas del IOLCon</p>
                 </div>
             </div>
         </div>
@@ -672,6 +792,22 @@
                 </select>
             </div>
             
+            <!-- NUEVO: SWITCH DE PRIORIDAD -->
+            <div class="filter-group">
+                <label for="priority-switch">Prioridad de recomendación</label>
+                <div class="priority-switch-container">
+                    <span class="switch-label" style="color: #3498db;">Aberración</span>
+                    <label class="switch">
+                        <input type="checkbox" id="priority-switch">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="switch-label" style="color: #9b59b6;">Hidrofobicidad</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #666; margin-top: 3px;">
+                    <em>Cambia para modificar criterio de recomendación</em>
+                </div>
+            </div>
+            
             <div class="filter-group search-box">
                 <label for="search">Buscar por nombre o código</label>
                 <div class="search-input">
@@ -700,7 +836,7 @@
         
         <footer>
             <p>Catálogo actualizado: 03 de diciembre de 2025 | Datos cargados desde bbdd Jd</p>
-	    <p class="small-text">v.25.11.020 Created by Jose Díaz</p>
+            <p class="small-text">v.25.11.022 Created by Jose Díaz</p>
         </footer>
     </div>
 
@@ -713,7 +849,8 @@
         let currentLenses = [];
         let isSingleLensView = false;
         let currentSingleLens = null;
-        let recommendedZeissLenses = []; // NUEVA: Para guardar todas las lentes recomendadas
+        let recommendedZeissLenses = [];
+        let priorityHydrophobicity = false; // false = prioridad aberración, true = prioridad hidrofobicidad
 
         // NUEVA FUNCIÓN: Buscar en Google
         function searchLensOnGoogle(lensId) {
@@ -884,46 +1021,169 @@
             return null;
         }
 
-        // NUEVA FUNCIÓN: Encontrar todas las lentes Zeiss recomendadas
+        // Función para calcular diferencia de SA Correction
+        function calculateSADifference(selectedLens, zeissLens) {
+            const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
+            const zeissSAValue = extractSACorrectionValue(zeissLens.specifications.saCorrection);
+            
+            if (selectedSAValue === null || zeissSAValue === null) return null;
+            
+            return Math.abs(zeissSAValue - selectedSAValue);
+        }
+
+        // NUEVA FUNCIÓN MODIFICADA: Encontrar todas las lentes Zeiss recomendadas con prioridad configurable
         function findRecommendedZeissLenses(selectedLens, zeissLenses) {
             if (!zeissLenses || zeissLenses.length === 0) return [];
             
             const selectedAberration = selectedLens.specifications.aberration;
+            const selectedHydrophobicity = selectedLens.specifications.hydro;
             const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
             
-            if (!selectedAberration || selectedSAValue === null) return [];
+            console.log('🔀 Modo de prioridad:', priorityHydrophobicity ? 'HIDROFOBICIDAD primero' : 'ABERRACIÓN primero');
+            console.log('🔍 Criterios seleccionados:', {
+                aberración: selectedAberration,
+                hidrofobicidad: selectedHydrophobicity,
+                saCorrection: selectedSAValue
+            });
             
-            // Filtrar lentes con la misma aberración
-            const sameAberrationLenses = zeissLenses.filter(lens => {
+            // Filtrar lentes que coincidan en al menos uno de los criterios principales
+            let candidates = zeissLenses.filter(lens => {
                 const lensAberration = lens.specifications.aberration;
-                return lensAberration === selectedAberration;
-            });
-            
-            if (sameAberrationLenses.length === 0) return [];
-            
-            // Encontrar el valor de SA Correction más cercano
-            let closestValue = Infinity;
-            sameAberrationLenses.forEach(lens => {
+                const lensHydrophobicity = lens.specifications.hydro;
                 const lensSAValue = extractSACorrectionValue(lens.specifications.saCorrection);
-                if (lensSAValue !== null) {
-                    const difference = Math.abs(lensSAValue - selectedSAValue);
-                    if (difference < closestValue) {
-                        closestValue = difference;
-                    }
-                }
-            });
-            
-            // Marcar como recomendadas las lentes con el SA Correction más cercano
-            const recommendedLenses = sameAberrationLenses.filter(lens => {
-                const lensSAValue = extractSACorrectionValue(lens.specifications.saCorrection);
-                if (lensSAValue === null) return false;
                 
-                const difference = Math.abs(lensSAValue - selectedSAValue);
-                // Considerar como "más próximo" si la diferencia es mínima
-                return Math.abs(difference - closestValue) < 0.001; // Tolerancia de 0.001
+                // Coincidencia en al menos un criterio
+                const aberrationMatch = lensAberration === selectedAberration;
+                const hydrophobicityMatch = lensHydrophobicity === selectedHydrophobicity;
+                
+                return aberrationMatch || hydrophobicityMatch;
             });
             
-            return recommendedLenses;
+            console.log(`📋 Candidatos iniciales: ${candidates.length}`);
+            
+            if (candidates.length === 0) return [];
+            
+            // Si prioridad es HIDROFOBICIDAD
+            if (priorityHydrophobicity) {
+                console.log('🎯 Filtro: Prioridad HIDROFOBICIDAD');
+                
+                // Primero filtramos por hidrofobicidad exacta
+                const exactHydroMatches = candidates.filter(lens => 
+                    lens.specifications.hydro === selectedHydrophobicity
+                );
+                
+                console.log(`💧 Coincidencias exactas en hidrofobicidad: ${exactHydroMatches.length}`);
+                
+                if (exactHydroMatches.length > 0) {
+                    // Dentro de las que coinciden en hidrofobicidad, buscamos las de SA más próximo
+                    const saDifferences = exactHydroMatches.map(lens => ({
+                        lens,
+                        saDiff: calculateSADifference(selectedLens, lens),
+                        aberrationMatch: lens.specifications.aberration === selectedAberration
+                    })).filter(item => item.saDiff !== null);
+                    
+                    if (saDifferences.length > 0) {
+                        // Ordenar por diferencia de SA (menor primero)
+                        saDifferences.sort((a, b) => a.saDiff - b.saDiff);
+                        const minSaDiff = saDifferences[0].saDiff;
+                        
+                        // Tomar todas las que tengan la mínima diferencia
+                        const bestMatches = saDifferences
+                            .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                            .map(item => item.lens);
+                        
+                        console.log(`⭐ Lentes recomendadas (hidrofobicidad + SA): ${bestMatches.length}`);
+                        return bestMatches;
+                    }
+                    console.log(`⭐ Lentes recomendadas (solo hidrofobicidad): ${exactHydroMatches.length}`);
+                    return exactHydroMatches;
+                }
+                
+                // Si no hay coincidencia exacta en hidrofobicidad, buscamos por SA más próximo
+                const candidatesWithSA = candidates.map(lens => ({
+                    lens,
+                    saDiff: calculateSADifference(selectedLens, lens),
+                    aberrationMatch: lens.specifications.aberration === selectedAberration
+                })).filter(item => item.saDiff !== null);
+                
+                if (candidatesWithSA.length > 0) {
+                    candidatesWithSA.sort((a, b) => a.saDiff - b.saDiff);
+                    const minSaDiff = candidatesWithSA[0].saDiff;
+                    
+                    const bestMatches = candidatesWithSA
+                        .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                        .map(item => item.lens);
+                    
+                    console.log(`⭐ Lentes recomendadas (mejor SA disponible): ${bestMatches.length}`);
+                    return bestMatches;
+                }
+                
+                console.log(`⭐ Lentes recomendadas (cualquier coincidencia): ${candidates.length}`);
+                return candidates;
+            } 
+            // Si prioridad es ABERRACIÓN (valor por defecto)
+            else {
+                console.log('🎯 Filtro: Prioridad ABERRACIÓN');
+                
+                // Primero filtramos por aberración exacta
+                const exactAberrationMatches = candidates.filter(lens => 
+                    lens.specifications.aberration === selectedAberration
+                );
+                
+                console.log(`🔬 Coincidencias exactas en aberración: ${exactAberrationMatches.length}`);
+                
+                if (exactAberrationMatches.length > 0) {
+                    // Dentro de las que coinciden en aberración, buscamos las de SA más próximo
+                    const saDifferences = exactAberrationMatches.map(lens => ({
+                        lens,
+                        saDiff: calculateSADifference(selectedLens, lens),
+                        hydroMatch: lens.specifications.hydro === selectedHydrophobicity
+                    })).filter(item => item.saDiff !== null);
+                    
+                    if (saDifferences.length > 0) {
+                        // Ordenar por diferencia de SA
+                        saDifferences.sort((a, b) => a.saDiff - b.saDiff);
+                        const minSaDiff = saDifferences[0].saDiff;
+                        
+                        // Tomar todas las que tengan la mínima diferencia
+                        const bestMatches = saDifferences
+                            .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                            .map(item => item.lens);
+                        
+                        console.log(`⭐ Lentes recomendadas (aberración + SA): ${bestMatches.length}`);
+                        return bestMatches;
+                    }
+                    console.log(`⭐ Lentes recomendadas (solo aberración): ${exactAberrationMatches.length}`);
+                    return exactAberrationMatches;
+                }
+                
+                // Si no hay coincidencia exacta en aberración, buscamos por SA más próximo
+                const candidatesWithSA = candidates.map(lens => ({
+                    lens,
+                    saDiff: calculateSADifference(selectedLens, lens),
+                    hydroMatch: lens.specifications.hydro === selectedHydrophobicity
+                })).filter(item => item.saDiff !== null);
+                
+                if (candidatesWithSA.length > 0) {
+                    candidatesWithSA.sort((a, b) => a.saDiff - b.saDiff);
+                    const minSaDiff = candidatesWithSA[0].saDiff;
+                    
+                    const bestMatches = candidatesWithSA
+                        .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                        .map(item => item.lens);
+                    
+                    console.log(`⭐ Lentes recomendadas (mejor SA disponible): ${bestMatches.length}`);
+                    return bestMatches;
+                }
+                
+                console.log(`⭐ Lentes recomendadas (cualquier coincidencia): ${candidates.length}`);
+                return candidates;
+            }
+        }
+
+        // NUEVA FUNCIÓN: Verificar si una lente es recomendada
+        function isLensRecommended(lens) {
+            return recommendedZeissLenses.some(recLens => recLens.id === lens.id);
         }
 
         // MODIFICADA: Función para encontrar lentes Zeiss similares
@@ -947,26 +1207,11 @@
             
             console.log(`🎯 Encontrados ${similarLenses.length} lentes Zeiss similares`);
             
-            // Encontrar las lentes recomendadas
+            // Encontrar las lentes recomendadas según la prioridad actual
             recommendedZeissLenses = findRecommendedZeissLenses(selectedLens, similarLenses);
             console.log(`⭐ ${recommendedZeissLenses.length} lentes Zeiss RECOMENDADAS`);
             
             return similarLenses;
-        }
-
-        // NUEVA FUNCIÓN: Verificar si una lente es recomendada
-        function isLensRecommended(lens) {
-            return recommendedZeissLenses.some(recLens => recLens.id === lens.id);
-        }
-
-        // NUEVA FUNCIÓN: Calcular diferencia de SA Correction
-        function calculateSADifference(selectedLens, zeissLens) {
-            const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
-            const zeissSAValue = extractSACorrectionValue(zeissLens.specifications.saCorrection);
-            
-            if (selectedSAValue === null || zeissSAValue === null) return null;
-            
-            return Math.abs(zeissSAValue - selectedSAValue);
         }
 
         // MODIFICADA: Función para crear tarjeta de lente - CON ETIQUETA RECOMENDADO
@@ -977,6 +1222,8 @@
             let cardHeaderClass = '';
             let isRecommended = false;
             let saDifference = null;
+            let aberrationMatch = false;
+            let hydroMatch = false;
             
             if (isSingleLensView) {
                 if (currentSingleLens && currentSingleLens.id === lens.id) {
@@ -992,14 +1239,16 @@
                         cardHeaderClass += ' card-header-recommended';
                         // Calcular diferencia de SA Correction
                         saDifference = calculateSADifference(currentSingleLens, lens);
+                        // Verificar coincidencias
+                        aberrationMatch = currentSingleLens.specifications.aberration === lens.specifications.aberration;
+                        hydroMatch = currentSingleLens.specifications.hydro === lens.specifications.hydro;
                     }
                 }
             }
             
             const tags = getTags(lens);
             
-            // MODIFICADO: El botón "Web" siempre está visible, incluso en vista de comparación
-            // Solo el botón "Comparar con Zeiss" se oculta en vista de comparación
+            // El botón "Web" siempre está visible, solo el botón "Comparar con Zeiss" se oculta en vista de comparación
             const showCompareButton = !isSingleLensView;
             
             card.innerHTML = `
@@ -1055,11 +1304,14 @@
                     ${isRecommended && saDifference !== null ? `
                     <div style="background: #fffde7; padding: 0.8rem; border-radius: 5px; margin-top: 1rem; border-left: 4px solid #f1c40f;">
                         <div style="font-weight: bold; color: #f57f17; margin-bottom: 0.3rem; display: flex; align-items: center;">
-                            <span style="margin-right: 0.5rem;">⭐</span> Coincidencia Óptima
+                            <span style="margin-right: 0.5rem;">⭐</span> Coincidencia Óptima (Prioridad: ${priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración'})
                         </div>
                         <div style="font-size: 0.9rem; color: #666;">
-                            <strong>Aberración:</strong> ${currentSingleLens.specifications.aberration || 'N/A'} → ✅ Coincide exacta<br>
-                            <strong>SA Correction:</strong> Diferencia de ${saDifference.toFixed(3)} µm (más próximo encontrado)
+                            <strong>Aberración:</strong> ${currentSingleLens.specifications.aberration || 'N/A'} → 
+                            ${aberrationMatch ? '✅ Coincide exacta' : '❌ No coincide'}<br>
+                            <strong>Hidrofobicidad:</strong> ${currentSingleLens.specifications.hydro || 'N/A'} → 
+                            ${hydroMatch ? '✅ Coincide exacta' : '❌ No coincide'}<br>
+                            <strong>SA Correction:</strong> Diferencia de ${saDifference.toFixed(3)} µm (${saDifference === 0 ? 'coincide exactamente' : 'más próximo encontrado'})
                         </div>
                     </div>` : ''}
                 </div>
@@ -1093,14 +1345,14 @@
                             ` - <strong style="color: #f39c12;">${recommendedZeissLenses.length} RECOMENDADAS</strong></small>` : 
                             '</small>'
                         }
-                        <br><small><strong>Criterio recomendación:</strong> Misma Aberración + SA Correction más próximo</small>
+                        <br><small><strong>Criterio recomendación:</strong> Prioridad ${priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración'} + SA Correction más próximo</small>
                     </div>
                     <button class="btn btn-show-all" onclick="showAllLenses()">📋 Ver todos</button>
                 </div>
             `;
             viewSingleInfo.style.display = 'block';
             
-            // Deshabilitar filtros
+            // Deshabilitar filtros excepto el switch de prioridad
             ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn', 'iolcon-btn'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) element.disabled = true;
@@ -1265,7 +1517,8 @@
         function updateResultsCount() {
             const resultsCount = document.getElementById('results-count');
             if (isSingleLensView) {
-                resultsCount.textContent = `🔍 Vista de comparación: ${currentLenses.length} lente(s) (1 seleccionado + ${currentLenses.length - 1} Zeiss similares) - ${recommendedZeissLenses.length} RECOMENDADAS`;
+                const priorityText = priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración';
+                resultsCount.textContent = `🔍 Vista de comparación: ${currentLenses.length} lente(s) (1 seleccionado + ${currentLenses.length - 1} Zeiss similares) - ${recommendedZeissLenses.length} RECOMENDADAS (Prioridad: ${priorityText})`;
             } else {
                 resultsCount.textContent = `Mostrando ${currentLenses.length} lente(s) de ${allLenses.length}`;
             }
@@ -1351,6 +1604,52 @@
         });
 
         function initializeApp() {
+            // Evento para el switch de prioridad
+            document.getElementById('priority-switch').addEventListener('change', function() {
+                priorityHydrophobicity = this.checked;
+                const priorityText = priorityHydrophobicity ? 'HIDROFOBICIDAD' : 'ABERRACIÓN';
+                console.log(`🔀 Prioridad cambiada a: ${priorityText}`);
+                
+                // Actualizar etiquetas visuales del switch
+                const switchLabels = document.querySelectorAll('.switch-label');
+                if (priorityHydrophobicity) {
+                    switchLabels[0].style.color = '#666';
+                    switchLabels[0].style.fontWeight = 'normal';
+                    switchLabels[1].style.color = '#9b59b6';
+                    switchLabels[1].style.fontWeight = 'bold';
+                } else {
+                    switchLabels[0].style.color = '#3498db';
+                    switchLabels[0].style.fontWeight = 'bold';
+                    switchLabels[1].style.color = '#666';
+                    switchLabels[1].style.fontWeight = 'normal';
+                }
+                
+                // Si estamos en vista de comparación, recalcular recomendaciones
+                if (isSingleLensView && currentSingleLens) {
+                    console.log('🔄 Recalculando recomendaciones con nueva prioridad...');
+                    const similarZeissLenses = findSimilarZeissLenses(currentSingleLens);
+                    currentLenses = [currentSingleLens, ...similarZeissLenses];
+                    renderLenses(currentLenses);
+                    updateResultsCount();
+                    
+                    // Actualizar información de vista
+                    const viewSingleInfo = document.getElementById('view-single-info');
+                    if (viewSingleInfo.style.display !== 'none') {
+                        viewSingleInfo.querySelector('div').innerHTML = viewSingleInfo.querySelector('div').innerHTML.replace(
+                            /Prioridad (Aberración|Hidrofobicidad)/,
+                            `Prioridad ${priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración'}`
+                        );
+                    }
+                }
+            });
+
+            // Inicializar colores del switch
+            const switchLabels = document.querySelectorAll('.switch-label');
+            switchLabels[0].style.color = '#3498db';
+            switchLabels[0].style.fontWeight = 'bold';
+            switchLabels[1].style.color = '#666';
+            switchLabels[1].style.fontWeight = 'normal';
+
             document.getElementById('search-btn').addEventListener('click', filterLenses);
             document.getElementById('reset-btn').addEventListener('click', function() {
                 document.getElementById('search').value = '';

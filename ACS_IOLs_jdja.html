@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Lentes Intraoculares</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            padding-left: 80px; /* Espacio para el logo izquierdo */
+        }
+        
+        /* NUEVO: Logo personalizado en esquina izquierda */
+        .custom-logo {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 2px solid #3498db;
+            overflow: hidden;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+        
+        .custom-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .custom-logo .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+        
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3498db;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 3px solid #3498db;
+            overflow: hidden;
+        }
+        
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+        }
+        
+        .header-text {
+            text-align: left;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        select, input {
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .search-box {
+            flex-grow: 1;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+        }
+        
+        .btn {
+            padding: 0.7rem 1.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-reset {
+            background: var(--accent);
+        }
+        
+        .btn-reset:hover {
+            background: #c0392b;
+        }
+        
+        /* NUEVO ESTILO PARA BOTÓN IOLCON */
+        .btn-iolcon {
+            background: #9b59b6;
+            padding: 0.7rem 1.5rem;
+        }
+        
+        .btn-iolcon:hover {
+            background: #8e44ad;
+        }
+        
+        .btn-view-single {
+            background: var(--success);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-view-single:hover {
+            background: #219652;
+        }
+
+        /* NUEVO ESTILO PARA EL BOTÓN DE GOOGLE */
+        .btn-google {
+            background: #4285f4;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-google:hover {
+            background: #3367d6;
+        }
+        
+        .btn-show-all {
+            background: var(--warning);
+            margin-left: 1rem;
+        }
+        
+        .btn-show-all:hover {
+            background: #e67e22;
+        }
+        
+        /* ESTILOS PARA BÚSQUEDA AVANZADA */
+        .advanced-search-container {
+            margin-bottom: 2rem;
+        }
+        
+        .btn-advanced {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-advanced:hover {
+            background: linear-gradient(135deg, #8e44ad, #7d3c98);
+        }
+        
+        .advanced-panel {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 0.5rem;
+            padding: 1.5rem;
+            border: 2px solid #3498db;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .advanced-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .advanced-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .advanced-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #219652;
+        }
+        
+        .patient-info-display {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .patient-info-display h4 {
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .patient-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+        }
+        
+        .patient-detail-item {
+            background: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .patient-detail-label {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+        
+        .patient-detail-value {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .calculation-result {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--success);
+        }
+        
+        /* Estilos para el input file oculto */
+        .hidden-file-input {
+            display: none;
+        }
+        
+        .lens-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .lens-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .lens-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header-selected {
+            background: var(--success) !important;
+        }
+        
+        .card-header-zeiss {
+            background: #8e44ad !important;
+        }
+        
+        /* NUEVO ESTILO PARA CABECERA RECOMENDADA */
+        .card-header-recommended {
+            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header-recommended::after {
+            content: "⭐ RECOMENDADO";
+            position: absolute;
+            top: 5px;
+            right: -30px;
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 3px 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .lens-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        
+        .lens-manufacturer {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .lens-id {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .header-left {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        /* NUEVO ESTILO PARA ETIQUETA RECOMENDADO */
+        .recommended-tag {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #2c3e50;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .recommended-tag i {
+            margin-right: 0.3rem;
+        }
+        
+        /* NUEVO ESTILO PARA INDICADOR DE SIMILITUD */
+        .match-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: #3498db;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .specs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .spec-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .spec-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .spec-value {
+            font-weight: 600;
+            color: var(--dark);
+            text-align: right;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tag-monofocal { background: #e1f5fe; color: #01579b; }
+        .tag-multifocal { background: #e8f5e9; color: #1b5e20; }
+        .tag-toric { background: #fce4ec; color: #880e4f; }
+        .tag-edof { background: #fff3e0; color: #e65100; }
+        .tag-hydrophilic { background: #e3f2fd; color: #0d47a1; }
+        .tag-hydrophobic { background: #e8eaf6; color: #1a237e; }
+        .tag-yellow { background: #fff9c4; color: #f57f17; }
+        .tag-clear { background: #f5f5f5; color: #616161; }
+        .tag-preloaded { background: #e8f5e9; color: #1b5e20; }
+        .tag-foldable { background: #f3e5f5; color: #4a148c; }
+        
+        .constants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .constants-table th, .constants-table td {
+            padding: 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .constants-table th {
+            font-weight: 600;
+            color: var(--dark);
+            background: #f8f9fa;
+        }
+        
+        .constants-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .availability-section {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+        
+        .range-item {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+        }
+        
+        .results-count {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent);
+            background: #ffeaea;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .retry-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        
+        .single-lens-mode {
+            background: #e8f5e9;
+            border-left: 4px solid var(--success);
+        }
+        
+        .view-single-info {
+            background: #e8f4fd;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .zeiss-count {
+            background: #8e44ad;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        /* NUEVOS ESTILOS PARA RESULTADOS CON COLORES */
+        .result-red {
+            background-color: #ffebee !important;
+            color: #c62828 !important;
+            border-left: 4px solid #f44336 !important;
+        }
+        
+        .result-yellow {
+            background-color: #fffde7 !important;
+            color: #f57f17 !important;
+            border-left: 4px solid #ffeb3b !important;
+        }
+        
+        .result-green {
+            background-color: #e8f5e9 !important;
+            color: #2e7d32 !important;
+            border-left: 4px solid #4caf50 !important;
+        }
+        
+        /* Mejorar visualización del item de resultados */
+        .spec-item.result-red,
+        .spec-item.result-yellow,
+        .spec-item.result-green {
+            font-weight: 600;
+            padding: 10px !important;
+            margin-top: 15px !important;
+            border-radius: 5px !important;
+            border-bottom: none !important;
+        }
+        
+        /* NUEVOS ESTILOS PARA EL SWITCH DE PRIORIDAD */
+        .priority-switch-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #3498db;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #9b59b6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .switch-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .specs-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .header-right {
+                align-self: stretch;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+                padding-left: 0;
+            }
+            
+            .header-text {
+                text-align: center;
+            }
+            
+            /* Ajustes para logo personalizado en móvil */
+            .custom-logo {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 10px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .logo-icon {
+                font-size: 2rem;
+            }
+            
+            /* Ajuste para etiqueta recomendado en móvil */
+            .card-header-recommended::after {
+                font-size: 0.6rem;
+                right: -35px;
+                padding: 2px 35px;
+            }
+            
+            .recommended-tag {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.6rem;
+            }
+            
+            .match-indicator {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.5rem;
+            }
+            
+            /* Ajuste para switch en móvil */
+            .priority-switch-container {
+                justify-content: center;
+            }
+            
+            /* Ajustes para búsqueda avanzada en móvil */
+            .advanced-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .advanced-actions {
+                flex-direction: column;
+            }
+            
+            .advanced-actions .btn {
+                width: 100%;
+            }
+            
+            .patient-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8F613MBGHF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8F613MBGHF');
+</script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <!-- NUEVO: Logo personalizado en esquina izquierda -->
+            <div class="custom-logo">
+                <!-- REEMPLAZA "tu_logo.png" CON LA RUTA DE TU LOGO -->
+                <img src="LogoJD.png" alt="Logo ACS" class="logo-img">
+                <!-- Si no tienes imagen, descomenta la siguiente línea -->
+                <!-- <div class="logo-text">ACS</div> -->
+            </div>
+            
+            <div class="header-content">
+                <!-- Logo con icono de ojo (existente) -->
+                <div class="logo">
+                    <div class="logo-icon">👁️</div>
+                </div>
+                
+                <div class="header-text">
+                    <h1>ACS - Lentes Intraoculares</h1>
+                    <h2>[Advance Clinical Service]</h2>
+                    <p class="subtitle">Constantes extraidas del IOLCon</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="filters">
+            <div class="filter-group">
+                <label for="manufacturer">Fabricante</label>
+                <select id="manufacturer">
+                    <option value="">Todos los fabricantes</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="concept">Concepto Óptico</label>
+                <select id="concept">
+                    <option value="">Todos los tipos</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="toric">Tórico</label>
+                <select id="toric">
+                    <option value="">Todos</option>
+                    <option value="yes">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            
+            <!-- NUEVO: SWITCH DE PRIORIDAD -->
+            <div class="filter-group">
+                <label for="priority-switch">Prioridad de recomendación</label>
+                <div class="priority-switch-container">
+                    <span class="switch-label" style="color: #3498db;">Aberración</span>
+                    <label class="switch">
+                        <input type="checkbox" id="priority-switch">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="switch-label" style="color: #9b59b6;">Hidrofobicidad</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #666; margin-top: 3px;">
+                    <em>Cambia para modificar criterio de recomendación</em>
+                </div>
+            </div>
+            
+            <div class="filter-group search-box">
+                <label for="search">Buscar por nombre o código</label>
+                <div class="search-input">
+                    <input type="text" id="search" placeholder="Ej: SN60WF, B1AB00, AcrySof..." style="width: 100%;">
+                </div>
+                <button class="btn" id="search-btn">🔍 Buscar</button>
+            </div>
+            
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-reset" id="reset-btn">🔄 Restablecer</button>
+                    <!-- NUEVO BOTÓN IOLCON -->
+                    <button class="btn btn-iolcon" id="iolcon-btn" onclick="window.open('https://iolcon.org/lensesTable.php', '_blank')">🌐 IOLCon</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NUEVO: PANEL DE BÚSQUEDA AVANZADA -->
+        <div class="advanced-search-container">
+            <button class="btn btn-advanced" id="toggle-advanced-btn">
+                🔍 Búsqueda Avanzada
+            </button>
+            
+            <div class="advanced-panel" id="advanced-panel" style="display: none;">
+                <div class="advanced-filters">
+                    <div class="advanced-section">
+                        <h3><i>👁️‍🗨️</i> Parámetros del Paciente</h3>
+                        <div class="advanced-grid">
+                            <div class="filter-group">
+                                <label for="patient-age">Edad (años)</label>
+                                <input type="number" id="patient-age" min="0" max="120" step="1" placeholder="Ej: 65">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="axial-length">Longitud Axial (mm)</label>
+                                <input type="number" id="axial-length" min="18" max="40" step="0.01" placeholder="Ej: 23.45">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="patient-name">Nombre del Paciente</label>
+                                <input type="text" id="patient-name" placeholder="Ej: Juan Pérez">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="patient-id">ID Paciente</label>
+                                <input type="text" id="patient-id" placeholder="Ej: PAC-001">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="advanced-section">
+                        <h3><i>⚙️</i> Parámetros Quirúrgicos</h3>
+                        <div class="advanced-grid">
+                            <div class="filter-group">
+                                <label for="target-refraction">Refracción Objetivo (D)</label>
+                                <input type="number" id="target-refraction" min="-10" max="10" step="0.25" placeholder="Ej: -0.50">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="k1">K1 (D)</label>
+                                <input type="number" id="k1" min="30" max="60" step="0.25" placeholder="Ej: 43.50">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="k2">K2 (D)</label>
+                                <input type="number" id="k2" min="30" max="60" step="0.25" placeholder="Ej: 44.25">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="acd">Profundidad de Cámara Anterior (mm)</label>
+                                <input type="number" id="acd" min="2" max="5" step="0.01" placeholder="Ej: 3.20">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="advanced-actions">
+                        <button class="btn btn-success" id="load-patient-btn">
+                            📁 Cargar desde archivo
+                        </button>
+                        <button class="btn" id="apply-advanced-btn">
+                            ✅ Aplicar filtros
+                        </button>
+                        <button class="btn btn-reset" id="clear-advanced-btn">
+                            🗑️ Limpiar
+                        </button>
+                        <button class="btn btn-iolcon" id="calculate-power-btn">
+                            🧮 Calcular potencia
+                        </button>
+                    </div>
+                    
+                    <div class="patient-info-display" id="patient-info-display" style="display: none;">
+                        <h4>📋 Datos del Paciente Cargados</h4>
+                        <div class="patient-details" id="patient-details"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-count" id="results-count">
+            <div class="loading">🔄 Cargando datos desde GitHub...</div>
+        </div>
+
+        <div id="view-single-info" style="display: none;"></div>
+        
+        <div class="lens-list" id="lens-list"></div>
+        
+        <footer>
+            <p>Catálogo actualizado: 03 de diciembre de 2025 | Datos cargados desde bbdd Jd</p>
+            <p class="small-text">v.25.11.022 Created by Jose Díaz</p>
+        </footer>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN
+        const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/globalatsdr/IOLs-Database/refs/heads/main/IOLexport.xml';
+        const PATIENT_FILE_URL = 'https://raw.githubusercontent.com/globalatsdr/IOLs-Database/refs/heads/main/patients.xml';
+
+        // Variables globales
+        let allLenses = [];
+        let currentLenses = [];
+        let isSingleLensView = false;
+        let currentSingleLens = null;
+        let recommendedZeissLenses = [];
+        let priorityHydrophobicity = false; // false = prioridad aberración, true = prioridad hidrofobicidad
+        
+        // Variables para datos de pacientes
+        let patientData = null;
+
+        // NUEVA FUNCIÓN: Buscar en Google
+        function searchLensOnGoogle(lensId) {
+            const lens = allLenses.find(l => l.id === lensId);
+            if (!lens) return;
+            
+            // Crear término de búsqueda con nombre y fabricante
+            const searchTerm = encodeURIComponent(`"${lens.name}" "${lens.manufacturer}" lente intraocular`);
+            const googleUrl = `https://www.google.com/search?q=${searchTerm}`;
+            
+            // Abrir en nueva pestaña
+            window.open(googleUrl, '_blank');
+        }
+
+        // Función principal de carga de lentes
+        async function loadLensesFromGitHub() {
+            try {
+                console.log('🔍 Iniciando carga desde:', GITHUB_RAW_URL);
+                
+                const response = await fetch(GITHUB_RAW_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const xmlText = await response.text();
+                console.log('✅ XML descargado correctamente');
+                
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                
+                return parseXMLToLenses(xmlDoc);
+                
+            } catch (error) {
+                console.error('❌ Error cargando datos:', error);
+                throw new Error(`No se pudo cargar el XML: ${error.message}`);
+            }
+        }
+
+        // NUEVA FUNCIÓN: Cargar datos de pacientes desde XML
+        async function loadPatientData() {
+            try {
+                console.log('🔍 Cargando datos de pacientes desde:', PATIENT_FILE_URL);
+                
+                const response = await fetch(PATIENT_FILE_URL);
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                
+                // Parsear el XML de pacientes
+                return parsePatientXML(xmlDoc);
+                
+            } catch (error) {
+                console.error('❌ Error cargando datos de pacientes:', error);
+                return null;
+            }
+        }
+
+        // NUEVA FUNCIÓN: Parsear XML de pacientes
+        function parsePatientXML(xmlDoc) {
+            const patients = [];
+            const patientElements = xmlDoc.getElementsByTagName('Patient');
+            
+            console.log(`📊 Encontrados ${patientElements.length} pacientes en el XML`);
+            
+            for (let i = 0; i < patientElements.length; i++) {
+                const patientElement = patientElements[i];
+                const patient = {
+                    id: patientElement.getAttribute('id') || `patient-${i}`,
+                    name: getPatientText(patientElement, 'Name'),
+                    age: parseInt(getPatientText(patientElement, 'Age')) || null,
+                    axialLength: parseFloat(getPatientText(patientElement, 'AxialLength')) || null,
+                    targetRefraction: parseFloat(getPatientText(patientElement, 'TargetRefraction')) || null,
+                    k1: parseFloat(getPatientText(patientElement, 'K1')) || null,
+                    k2: parseFloat(getPatientText(patientElement, 'K2')) || null,
+                    acd: parseFloat(getPatientText(patientElement, 'ACD')) || null,
+                    lt: parseFloat(getPatientText(patientElement, 'LT')) || null,
+                    createdAt: getPatientText(patientElement, 'CreatedAt'),
+                    notes: getPatientText(patientElement, 'Notes')
+                };
+                patients.push(patient);
+            }
+            
+            return patients;
+        }
+
+        // NUEVA FUNCIÓN: Helper para obtener texto de pacientes
+        function getPatientText(parentElement, tagName) {
+            const element = parentElement.getElementsByTagName(tagName)[0];
+            return element ? element.textContent : '';
+        }
+
+        // Parsing del XML de lentes
+        function parseXMLToLenses(xmlDoc) {
+            const lenses = [];
+            const lensElements = xmlDoc.getElementsByTagName('Lens');
+            
+            console.log(`📊 Encontrados ${lensElements.length} lentes en el XML`);
+            
+            for (let i = 0; i < lensElements.length; i++) {
+                const lensElement = lensElements[i];
+                const lens = {
+                    id: lensElement.getAttribute('id') || `lens-${i}`,
+                    manufacturer: getText(lensElement, 'Manufacturer'),
+                    name: getText(lensElement, 'Name'),
+                    specifications: parseSpecifications(lensElement),
+                    availability: parseAvailability(lensElement),
+                    constants: parseConstants(lensElement)
+                };
+                lenses.push(lens);
+            }
+            
+            return lenses;
+        }
+
+        function parseSpecifications(lensElement) {
+            const specsElement = lensElement.getElementsByTagName('Specifications')[0];
+            if (!specsElement) return {};
+            
+            return {
+                singlePiece: getText(specsElement, 'SinglePiece'),
+                opticMaterial: getText(specsElement, 'OpticMaterial'),
+                foldable: getText(specsElement, 'Foldable'),
+                incisionWidth: getText(specsElement, 'IncisionWidth'),
+                hydro: getText(specsElement, 'Hydro'),
+                filter: getText(specsElement, 'Filter'),
+                refractiveIndex: getText(specsElement, 'RefractiveIndex'),
+                abbeNumber: getText(specsElement, 'AbbeNumber'),
+                opticDiameter: getText(specsElement, 'OpticDiameter'),
+                hapticDiameter: getText(specsElement, 'HapticDiameter'),
+                opticConcept: getText(specsElement, 'OpticConcept'),
+                hapticDesign: getText(specsElement, 'HapticDesign'),
+                intendedLocation: getText(specsElement, 'IntendedLocation'),
+                opticDesign: getText(specsElement, 'OpticDesign'),
+                aberration: getText(specsElement, 'Aberration'),
+                saCorrection: getText(specsElement, 'saCorrection'),
+                toric: getText(specsElement, 'Toric')
+            };
+        }
+
+        function parseAvailability(lensElement) {
+            const availabilityElement = lensElement.getElementsByTagName('Availability')[0];
+            if (!availabilityElement) return {};
+            
+            const sphereRanges = [];
+            const sphereElements = availabilityElement.getElementsByTagName('Sphere');
+            
+            for (let i = 0; i < sphereElements.length; i++) {
+                const sphereElement = sphereElements[i];
+                sphereRanges.push({
+                    from: parseFloat(getText(sphereElement, 'From')) || 0,
+                    to: parseFloat(getText(sphereElement, 'To')) || 0,
+                    increment: parseFloat(getText(sphereElement, 'Increment')) || 0
+                });
+            }
+            
+            const additionElement = availabilityElement.getElementsByTagName('Addition')[0];
+            const addition = additionElement ? additionElement.textContent : '';
+            
+            return { sphereRanges, addition };
+        }
+
+        function parseConstants(lensElement) {
+            const constants = {
+                nominal: parseConstantType(lensElement, 'nominal'),
+                optimized: parseConstantType(lensElement, 'optimized')
+            };
+            return constants;
+        }
+
+        function parseConstantType(lensElement, type) {
+            const constantElements = lensElement.getElementsByTagName('Constants');
+            for (let i = 0; i < constantElements.length; i++) {
+                const constantElement = constantElements[i];
+                if (constantElement.getAttribute('type') === type) {
+                    const haigisElement = constantElement.getElementsByTagName('Haigis')[0];
+                    const barrettElement = constantElement.getElementsByTagName('Barrett')[0];
+                    
+                    return {
+                        ultrasound: getText(constantElement, 'Ultrasound'),
+                        srkt: getText(constantElement, 'SRKt'),
+                        hofferQ: getText(constantElement, 'HofferQ'),
+                        holladay1: getText(constantElement, 'Holladay1'),
+                        haigis: haigisElement ? {
+                            a0: getText(haigisElement, 'a0'),
+                            a1: getText(haigisElement, 'a1'),
+                            a2: getText(haigisElement, 'a2')
+                        } : {},
+                        barrett: barrettElement ? {
+                            lf: getText(barrettElement, 'LF'),
+                            df: getText(barrettElement, 'DF')
+                        } : {},
+                        results: constantElement.getAttribute('results') || "0"
+                    };
+                }
+            }
+            return {};
+        }
+
+        function getText(parentElement, tagName) {
+            const element = parentElement.getElementsByTagName(tagName)[0];
+            return element ? element.textContent : '';
+        }
+
+        // NUEVA FUNCIÓN: Extraer valor numérico de SA Correction
+        function extractSACorrectionValue(saCorrectionText) {
+            if (!saCorrectionText) return null;
+            
+            // Buscar números en el texto (ej: "0.27 µm", "0.27", "-0.11", "neutral", "correcting")
+            const lowercaseText = saCorrectionText.toLowerCase();
+            
+            // Primero verificar si es "neutral" o "correcting"
+            if (lowercaseText.includes('neutral')) return 0;
+            if (lowercaseText.includes('correcting')) return 0.27; // Valor por defecto para correcting
+            
+            // Buscar números
+            const match = saCorrectionText.match(/-?\d+\.?\d*/);
+            if (match) {
+                return parseFloat(match[0]);
+            }
+            return null;
+        }
+
+        // Función para calcular diferencia de SA Correction
+        function calculateSADifference(selectedLens, zeissLens) {
+            const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
+            const zeissSAValue = extractSACorrectionValue(zeissLens.specifications.saCorrection);
+            
+            if (selectedSAValue === null || zeissSAValue === null) return null;
+            
+            return Math.abs(zeissSAValue - selectedSAValue);
+        }
+
+        // NUEVA FUNCIÓN MODIFICADA: Encontrar todas las lentes Zeiss recomendadas con prioridad configurable
+        function findRecommendedZeissLenses(selectedLens, zeissLenses) {
+            if (!zeissLenses || zeissLenses.length === 0) return [];
+            
+            const selectedAberration = selectedLens.specifications.aberration;
+            const selectedHydrophobicity = selectedLens.specifications.hydro;
+            const selectedSAValue = extractSACorrectionValue(selectedLens.specifications.saCorrection);
+            
+            console.log('🔀 Modo de prioridad:', priorityHydrophobicity ? 'HIDROFOBICIDAD primero' : 'ABERRACIÓN primero');
+            console.log('🔍 Criterios seleccionados:', {
+                aberración: selectedAberration,
+                hidrofobicidad: selectedHydrophobicity,
+                saCorrection: selectedSAValue
+            });
+            
+            // Filtrar lentes que coincidan en al menos uno de los criterios principales
+            let candidates = zeissLenses.filter(lens => {
+                const lensAberration = lens.specifications.aberration;
+                const lensHydrophobicity = lens.specifications.hydro;
+                const lensSAValue = extractSACorrectionValue(lens.specifications.saCorrection);
+                
+                // Coincidencia en al menos un criterio
+                const aberrationMatch = lensAberration === selectedAberration;
+                const hydrophobicityMatch = lensHydrophobicity === selectedHydrophobicity;
+                
+                return aberrationMatch || hydrophobicityMatch;
+            });
+            
+            console.log(`📋 Candidatos iniciales: ${candidates.length}`);
+            
+            if (candidates.length === 0) return [];
+            
+            // Si prioridad es HIDROFOBICIDAD
+            if (priorityHydrophobicity) {
+                console.log('🎯 Filtro: Prioridad HIDROFOBICIDAD');
+                
+                // Primero filtramos por hidrofobicidad exacta
+                const exactHydroMatches = candidates.filter(lens => 
+                    lens.specifications.hydro === selectedHydrophobicity
+                );
+                
+                console.log(`💧 Coincidencias exactas en hidrofobicidad: ${exactHydroMatches.length}`);
+                
+                if (exactHydroMatches.length > 0) {
+                    // Dentro de las que coinciden en hidrofobicidad, buscamos las de SA más próximo
+                    const saDifferences = exactHydroMatches.map(lens => ({
+                        lens,
+                        saDiff: calculateSADifference(selectedLens, lens),
+                        aberrationMatch: lens.specifications.aberration === selectedAberration
+                    })).filter(item => item.saDiff !== null);
+                    
+                    if (saDifferences.length > 0) {
+                        // Ordenar por diferencia de SA (menor primero)
+                        saDifferences.sort((a, b) => a.saDiff - b.saDiff);
+                        const minSaDiff = saDifferences[0].saDiff;
+                        
+                        // Tomar todas las que tengan la mínima diferencia
+                        const bestMatches = saDifferences
+                            .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                            .map(item => item.lens);
+                        
+                        console.log(`⭐ Lentes recomendadas (hidrofobicidad + SA): ${bestMatches.length}`);
+                        return bestMatches;
+                    }
+                    console.log(`⭐ Lentes recomendadas (solo hidrofobicidad): ${exactHydroMatches.length}`);
+                    return exactHydroMatches;
+                }
+                
+                // Si no hay coincidencia exacta en hidrofobicidad, buscamos por SA más próximo
+                const candidatesWithSA = candidates.map(lens => ({
+                    lens,
+                    saDiff: calculateSADifference(selectedLens, lens),
+                    aberrationMatch: lens.specifications.aberration === selectedAberration
+                })).filter(item => item.saDiff !== null);
+                
+                if (candidatesWithSA.length > 0) {
+                    candidatesWithSA.sort((a, b) => a.saDiff - b.saDiff);
+                    const minSaDiff = candidatesWithSA[0].saDiff;
+                    
+                    const bestMatches = candidatesWithSA
+                        .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                        .map(item => item.lens);
+                    
+                    console.log(`⭐ Lentes recomendadas (mejor SA disponible): ${bestMatches.length}`);
+                    return bestMatches;
+                }
+                
+                console.log(`⭐ Lentes recomendadas (cualquier coincidencia): ${candidates.length}`);
+                return candidates;
+            } 
+            // Si prioridad es ABERRACIÓN (valor por defecto)
+            else {
+                console.log('🎯 Filtro: Prioridad ABERRACIÓN');
+                
+                // Primero filtramos por aberración exacta
+                const exactAberrationMatches = candidates.filter(lens => 
+                    lens.specifications.aberration === selectedAberration
+                );
+                
+                console.log(`🔬 Coincidencias exactas en aberración: ${exactAberrationMatches.length}`);
+                
+                if (exactAberrationMatches.length > 0) {
+                    // Dentro de las que coinciden en aberración, buscamos las de SA más próximo
+                    const saDifferences = exactAberrationMatches.map(lens => ({
+                        lens,
+                        saDiff: calculateSADifference(selectedLens, lens),
+                        hydroMatch: lens.specifications.hydro === selectedHydrophobicity
+                    })).filter(item => item.saDiff !== null);
+                    
+                    if (saDifferences.length > 0) {
+                        // Ordenar por diferencia de SA
+                        saDifferences.sort((a, b) => a.saDiff - b.saDiff);
+                        const minSaDiff = saDifferences[0].saDiff;
+                        
+                        // Tomar todas las que tengan la mínima diferencia
+                        const bestMatches = saDifferences
+                            .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                            .map(item => item.lens);
+                        
+                        console.log(`⭐ Lentes recomendadas (aberración + SA): ${bestMatches.length}`);
+                        return bestMatches;
+                    }
+                    console.log(`⭐ Lentes recomendadas (solo aberración): ${exactAberrationMatches.length}`);
+                    return exactAberrationMatches;
+                }
+                
+                // Si no hay coincidencia exacta en aberración, buscamos por SA más próximo
+                const candidatesWithSA = candidates.map(lens => ({
+                    lens,
+                    saDiff: calculateSADifference(selectedLens, lens),
+                    hydroMatch: lens.specifications.hydro === selectedHydrophobicity
+                })).filter(item => item.saDiff !== null);
+                
+                if (candidatesWithSA.length > 0) {
+                    candidatesWithSA.sort((a, b) => a.saDiff - b.saDiff);
+                    const minSaDiff = candidatesWithSA[0].saDiff;
+                    
+                    const bestMatches = candidatesWithSA
+                        .filter(item => Math.abs(item.saDiff - minSaDiff) < 0.001)
+                        .map(item => item.lens);
+                    
+                    console.log(`⭐ Lentes recomendadas (mejor SA disponible): ${bestMatches.length}`);
+                    return bestMatches;
+                }
+                
+                console.log(`⭐ Lentes recomendadas (cualquier coincidencia): ${candidates.length}`);
+                return candidates;
+            }
+        }
+
+        // NUEVA FUNCIÓN: Verificar si una lente es recomendada
+        function isLensRecommended(lens) {
+            return recommendedZeissLenses.some(recLens => recLens.id === lens.id);
+        }
+
+        // MODIFICADA: Función para encontrar lentes Zeiss similares
+        function findSimilarZeissLenses(selectedLens) {
+            const specs = selectedLens.specifications;
+            
+            console.log('🔍 Buscando lentes Zeiss similares para:', selectedLens.name);
+            
+            const similarLenses = allLenses.filter(lens => {
+                if (lens.id === selectedLens.id) return false;
+                
+                const manufacturer = lens.manufacturer.toLowerCase();
+                if (!manufacturer.includes('zeiss')) return false;
+                
+                const lensSpecs = lens.specifications;
+                const sameOpticConcept = lensSpecs.opticConcept === specs.opticConcept;
+                const sameToric = lensSpecs.toric === specs.toric;
+                
+                return sameOpticConcept && sameToric;
+            });
+            
+            console.log(`🎯 Encontrados ${similarLenses.length} lentes Zeiss similares`);
+            
+            // Encontrar las lentes recomendadas según la prioridad actual
+            recommendedZeissLenses = findRecommendedZeissLenses(selectedLens, similarLenses);
+            console.log(`⭐ ${recommendedZeissLenses.length} lentes Zeiss RECOMENDADAS`);
+            
+            return similarLenses;
+        }
+
+        // MODIFICADA: Función para crear tarjeta de lente - CON ETIQUETA RECOMENDADO
+        function createLensCard(lens) {
+            const card = document.createElement('div');
+            card.className = 'lens-card';
+            
+            let cardHeaderClass = '';
+            let isRecommended = false;
+            let saDifference = null;
+            let aberrationMatch = false;
+            let hydroMatch = false;
+            
+            if (isSingleLensView) {
+                if (currentSingleLens && currentSingleLens.id === lens.id) {
+                    card.classList.add('single-lens-mode');
+                    cardHeaderClass = 'card-header-selected';
+                } else if (lens.manufacturer.toLowerCase().includes('zeiss')) {
+                    cardHeaderClass = 'card-header-zeiss';
+                    
+                    // Verificar si es recomendada
+                    isRecommended = isLensRecommended(lens);
+                    
+                    if (isRecommended) {
+                        cardHeaderClass += ' card-header-recommended';
+                        // Calcular diferencia de SA Correction
+                        saDifference = calculateSADifference(currentSingleLens, lens);
+                        // Verificar coincidencias
+                        aberrationMatch = currentSingleLens.specifications.aberration === lens.specifications.aberration;
+                        hydroMatch = currentSingleLens.specifications.hydro === lens.specifications.hydro;
+                    }
+                }
+            }
+            
+            const tags = getTags(lens);
+            
+            // El botón "Web" siempre está visible, solo el botón "Comparar con Zeiss" se oculta en vista de comparación
+            const showCompareButton = !isSingleLensView;
+            
+            card.innerHTML = `
+                <div class="card-header ${cardHeaderClass}">
+                    <div class="header-left">
+                        <div class="lens-name">${lens.name} ${isRecommended ? '⭐' : ''}</div>
+                        <div class="lens-manufacturer">${lens.manufacturer}</div>
+                    </div>
+                    <div class="header-right">
+                        <div class="lens-id">ID: ${lens.id}</div>
+                        ${isRecommended ? 
+                            `<div class="recommended-tag"><i>⭐</i> RECOMENDADO</div>` : 
+                            ''
+                        }
+                        <div>
+                            ${showCompareButton ? 
+                                `<button class="btn btn-view-single" onclick="viewSingleLens('${lens.id}')">
+                                    🔍 Comparar con Zeiss
+                                </button>` : ''
+                            }
+                            <!-- BOTÓN "WEB" SIEMPRE VISIBLE -->
+                            <button class="btn btn-google" onclick="searchLensOnGoogle('${lens.id}')" title="Buscar en Web">
+                                🔎 Web
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="specs-container">
+                        <div>
+                            <div class="spec-section">
+                                <div class="section-title"><i>📋</i> Especificaciones</div>
+                                <div class="spec-grid">${renderSpecifications(lens.specifications)}</div>
+                                <div class="tags">${tags.join('')}</div>
+                            </div>
+                            <div class="spec-section">
+                                <div class="section-title"><i>📊</i> Disponibilidad</div>
+                                ${renderAvailability(lens.availability)}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="spec-section">
+                                <div class="section-title"><i>🧮</i> Constantes Nominales</div>
+                                ${renderConstants(lens.constants.nominal, 'nominal')}
+                            </div>
+                            ${lens.constants.optimized && lens.constants.optimized.results !== "0" ? `
+                            <div class="spec-section">
+                                <div class="section-title"><i>📈</i> Constantes Optimizadas</div>
+                                ${renderConstants(lens.constants.optimized, 'optimized')}
+                            </div>` : ''}
+                        </div>
+                    </div>
+                    ${isRecommended && saDifference !== null ? `
+                    <div style="background: #fffde7; padding: 0.8rem; border-radius: 5px; margin-top: 1rem; border-left: 4px solid #f1c40f;">
+                        <div style="font-weight: bold; color: #f57f17; margin-bottom: 0.3rem; display: flex; align-items: center;">
+                            <span style="margin-right: 0.5rem;">⭐</span> Coincidencia Óptima (Prioridad: ${priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración'})
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <strong>Aberración:</strong> ${currentSingleLens.specifications.aberration || 'N/A'} → 
+                            ${aberrationMatch ? '✅ Coincide exacta' : '❌ No coincide'}<br>
+                            <strong>Hidrofobicidad:</strong> ${currentSingleLens.specifications.hydro || 'N/A'} → 
+                            ${hydroMatch ? '✅ Coincide exacta' : '❌ No coincide'}<br>
+                            <strong>SA Correction:</strong> Diferencia de ${saDifference.toFixed(3)} µm (${saDifference === 0 ? 'coincide exactamente' : 'más próximo encontrado'})
+                        </div>
+                    </div>` : ''}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // MODIFICADA: Función para ver un lente individual
+        function viewSingleLens(lensId) {
+            const lens = allLenses.find(l => l.id === lensId);
+            if (!lens) return;
+            
+            isSingleLensView = true;
+            currentSingleLens = lens;
+            const similarZeissLenses = findSimilarZeissLenses(lens);
+            
+            currentLenses = [lens, ...similarZeissLenses];
+            
+            const viewSingleInfo = document.getElementById('view-single-info');
+            viewSingleInfo.innerHTML = `
+                <div class="view-single-info">
+                    <div>
+                        <strong>🔍 Vista de comparación:</strong> ${lens.manufacturer} - ${lens.name}
+                        <br><small><strong>Filtros aplicados:</strong> Concepto Óptico (${lens.specifications.opticConcept || 'N/A'}), Tórico (${lens.specifications.toric || 'N/A'})</small>
+                        ${similarZeissLenses.length > 0 ? 
+                            `<br><small><strong>${similarZeissLenses.length} lentes Zeiss encontrados</strong>` : 
+                            '<br><small><strong>No se encontraron lentes Zeiss con las mismas características</strong>'
+                        }
+                        ${recommendedZeissLenses.length > 0 ? 
+                            ` - <strong style="color: #f39c12;">${recommendedZeissLenses.length} RECOMENDADAS</strong></small>` : 
+                            '</small>'
+                        }
+                        <br><small><strong>Criterio recomendación:</strong> Prioridad ${priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración'} + SA Correction más próximo</small>
+                    </div>
+                    <button class="btn btn-show-all" onclick="showAllLenses()">📋 Ver todos</button>
+                </div>
+            `;
+            viewSingleInfo.style.display = 'block';
+            
+            // Deshabilitar filtros excepto el switch de prioridad
+            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn', 'iolcon-btn'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.disabled = true;
+            });
+            
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+
+        // Función para volver a ver todos los lentes
+        function showAllLenses() {
+            isSingleLensView = false;
+            currentSingleLens = null;
+            recommendedZeissLenses = [];
+            currentLenses = [...allLenses];
+            
+            document.getElementById('view-single-info').style.display = 'none';
+            
+            // Habilitar filtros
+            ['manufacturer', 'concept', 'toric', 'search', 'search-btn', 'reset-btn', 'iolcon-btn'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.disabled = false;
+            });
+            
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+
+        // Funciones de renderizado
+        function getTags(lens) {
+            const tags = [];
+            const specs = lens.specifications;
+            
+            if (specs.opticConcept) {
+                tags.push(`<span class="tag tag-${specs.opticConcept}">${specs.opticConcept}</span>`);
+            }
+            if (specs.hydro) {
+                tags.push(`<span class="tag tag-${specs.hydro}">${specs.hydro}</span>`);
+            }
+            if (specs.filter === "yellow") {
+                tags.push(`<span class="tag tag-yellow">Filtro amarillo</span>`);
+            } else if (specs.filter === "clear") {
+                tags.push(`<span class="tag tag-clear">Filtro claro</span>`);
+            }
+            if (specs.foldable === "yes") {
+                tags.push(`<span class="tag tag-foldable">Plegable</span>`);
+            }
+            if (specs.toric === "yes") {
+                tags.push(`<span class="tag tag-toric">Tórico</span>`);
+            }
+            
+            return tags;
+        }
+
+        function renderSpecifications(specs) {
+            let html = '';
+            const labels = {
+                singlePiece: 'Una pieza', opticMaterial: 'Material óptico', foldable: 'Plegable',
+                incisionWidth: 'Ancho incisión (mm)', hydro: 'Hidrofobicidad', filter: 'Filtro',
+                refractiveIndex: 'Índice refracción', abbeNumber: 'Número Abbe', opticDiameter: 'Diámetro óptico (mm)',
+                hapticDiameter: 'Diámetro háptico (mm)', opticConcept: 'Concepto óptico', hapticDesign: 'Diseño háptico',
+                intendedLocation: 'Ubicación prevista', opticDesign: 'Diseño óptico', aberration: 'Aberración',
+                saCorrection: 'Corrección SA', toric: 'Tórico'
+            };
+            
+            for (const [key, value] of Object.entries(specs)) {
+                if (value && value !== '') {
+                    const label = labels[key] || key;
+                    html += `<div class="spec-item">
+                        <span class="spec-label">${label}:</span>
+                        <span class="spec-value">${value}</span>
+                    </div>`;
+                }
+            }
+            return html;
+        }
+
+        function renderAvailability(availability) {
+            if (!availability.sphereRanges || availability.sphereRanges.length === 0) {
+                return '<div>No disponible</div>';
+            }
+            
+            let html = '<div class="availability-section">';
+            availability.sphereRanges.forEach(range => {
+                html += `<div class="range-item"><strong>Esfera:</strong> ${range.from}D a ${range.to}D (inc: ${range.increment}D)</div>`;
+            });
+            if (availability.addition) {
+                html += `<div class="range-item"><strong>Addición:</strong> ${availability.addition}D</div>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        // MODIFICADA: Función renderConstants con colores según resultados
+        function renderConstants(constants, type) {
+            if (!constants) return '<div>No disponible</div>';
+            
+            let hasData = false;
+            let html = '<table class="constants-table">';
+            
+            const basicConstants = [
+                { key: 'ultrasound', label: 'Ultrasound' },
+                { key: 'srkt', label: 'SRK/T' },
+                { key: 'hofferQ', label: 'Hoffer Q' },
+                { key: 'holladay1', label: 'Holladay 1' }
+            ];
+            
+            basicConstants.forEach(({ key, label }) => {
+                if (constants[key] && constants[key] !== '') {
+                    hasData = true;
+                    html += `<tr><td>${label}</td><td>${constants[key]}</td></tr>`;
+                }
+            });
+            
+            if (constants.haigis && constants.haigis.a0) {
+                hasData = true;
+                html += `
+                    <tr><td>Haigis a0</td><td>${constants.haigis.a0}</td></tr>
+                    <tr><td>Haigis a1</td><td>${constants.haigis.a1}</td></tr>
+                    <tr><td>Haigis a2</td><td>${constants.haigis.a2}</td></tr>
+                `;
+            }
+            
+            if (constants.barrett) {
+                if (constants.barrett.lf) {
+                    hasData = true;
+                    html += `<tr><td>Barrett LF</td><td>${constants.barrett.lf}</td></tr>`;
+                }
+                if (constants.barrett.df) {
+                    hasData = true;
+                    html += `<tr><td>Barrett DF</td><td>${constants.barrett.df}</td></tr>`;
+                }
+            }
+            
+            html += '</table>';
+            
+            // AGREGAR CONDICIONAL PARA RESULTADOS (solo para constantes optimizadas)
+            if (type === 'optimized' && constants.results) {
+                const resultsValue = parseInt(constants.results) || 0;
+                let colorClass = '';
+                
+                if (resultsValue <= 100) {
+                    colorClass = 'result-red';
+                } else if (resultsValue > 100 && resultsValue < 500) {
+                    colorClass = 'result-yellow';
+                } else if (resultsValue >= 500) {
+                    colorClass = 'result-green';
+                }
+                
+                html += `
+                    <div class="spec-item ${colorClass}" style="margin-top: 10px; padding: 8px; border-radius: 5px;">
+                        <span class="spec-label">Resultados:</span>
+                        <span class="spec-value" style="font-weight: bold;">${constants.results}</span>
+                    </div>
+                `;
+            }
+            
+            return hasData ? html : '<div>No disponible</div>';
+        }
+
+        // Función para actualizar contador
+        function updateResultsCount() {
+            const resultsCount = document.getElementById('results-count');
+            if (isSingleLensView) {
+                const priorityText = priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración';
+                resultsCount.textContent = `🔍 Vista de comparación: ${currentLenses.length} lente(s) (1 seleccionado + ${currentLenses.length - 1} Zeiss similares) - ${recommendedZeissLenses.length} RECOMENDADAS (Prioridad: ${priorityText})`;
+            } else {
+                resultsCount.textContent = `Mostrando ${currentLenses.length} lente(s) de ${allLenses.length}`;
+            }
+        }
+
+        // Función para renderizar lentes
+        function renderLenses(lensesToRender) {
+            const lensList = document.getElementById('lens-list');
+            lensList.innerHTML = '';
+            
+            if (lensesToRender.length === 0) {
+                lensList.innerHTML = '<div class="no-results">No se encontraron lentes</div>';
+                return;
+            }
+
+            lensesToRender.forEach(lens => {
+                lensList.appendChild(createLensCard(lens));
+            });
+        }
+
+        // Función para actualizar filtros
+        function updateFilters(lenses) {
+            const manufacturerSelect = document.getElementById('manufacturer');
+            const conceptSelect = document.getElementById('concept');
+            
+            const manufacturers = [...new Set(lenses.map(lens => lens.manufacturer))].sort();
+            const concepts = [...new Set(lenses.map(lens => lens.specifications.opticConcept).filter(Boolean))].sort();
+            
+            manufacturerSelect.innerHTML = '<option value="">Todos los fabricantes</option>';
+            conceptSelect.innerHTML = '<option value="">Todos los tipos</option>';
+            
+            manufacturers.forEach(manufacturer => {
+                manufacturerSelect.appendChild(new Option(manufacturer, manufacturer));
+            });
+            
+            concepts.forEach(concept => {
+                conceptSelect.appendChild(new Option(concept, concept));
+            });
+        }
+
+        // Función para filtrar lentes
+        function filterLenses() {
+            if (isSingleLensView) return;
+            
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const manufacturer = document.getElementById('manufacturer').value;
+            const concept = document.getElementById('concept').value;
+            const toric = document.getElementById('toric').value;
+
+            currentLenses = allLenses.filter(lens => {
+                if (searchTerm && !lens.name.toLowerCase().includes(searchTerm) && 
+                    !lens.manufacturer.toLowerCase().includes(searchTerm)) return false;
+                if (manufacturer && lens.manufacturer !== manufacturer) return false;
+                if (concept && lens.specifications.opticConcept !== concept) return false;
+                if (toric && lens.specifications.toric !== toric) return false;
+                return true;
+            });
+
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+
+        // NUEVAS FUNCIONES PARA BÚSQUEDA AVANZADA
+
+        // Función para buscar paciente por ID o nombre
+        function findPatientByIdOrName(searchTerm) {
+            if (!patientData || patientData.length === 0) return null;
+            
+            const searchLower = searchTerm.toLowerCase();
+            
+            // Primero buscar por ID exacto
+            const byId = patientData.find(p => 
+                p.id && p.id.toLowerCase().includes(searchLower)
+            );
+            if (byId) return byId;
+            
+            // Luego buscar por nombre
+            const byName = patientData.find(p => 
+                p.name && p.name.toLowerCase().includes(searchLower)
+            );
+            return byName || null;
+        }
+
+        // Función para cargar datos de un paciente en los campos
+        function loadPatientIntoForm(patient) {
+            if (!patient) return;
+            
+            document.getElementById('patient-name').value = patient.name || '';
+            document.getElementById('patient-id').value = patient.id || '';
+            
+            if (patient.age) document.getElementById('patient-age').value = patient.age;
+            if (patient.axialLength) document.getElementById('axial-length').value = patient.axialLength;
+            if (patient.targetRefraction) document.getElementById('target-refraction').value = patient.targetRefraction;
+            if (patient.k1) document.getElementById('k1').value = patient.k1;
+            if (patient.k2) document.getElementById('k2').value = patient.k2;
+            if (patient.acd) document.getElementById('acd').value = patient.acd;
+            
+            // Mostrar información del paciente cargado
+            displayPatientInfo(patient);
+        }
+
+        // Función para mostrar información del paciente
+        function displayPatientInfo(patient) {
+            const displayDiv = document.getElementById('patient-info-display');
+            const detailsDiv = document.getElementById('patient-details');
+            
+            if (!patient) {
+                displayDiv.style.display = 'none';
+                return;
+            }
+            
+            let html = '';
+            if (patient.name) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Nombre:</div>
+                <div class="patient-detail-value">${patient.name}</div>
+            </div>`;
+            
+            if (patient.age) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Edad:</div>
+                <div class="patient-detail-value">${patient.age} años</div>
+            </div>`;
+            
+            if (patient.axialLength) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Longitud Axial:</div>
+                <div class="patient-detail-value">${patient.axialLength.toFixed(2)} mm</div>
+            </div>`;
+            
+            if (patient.k1 && patient.k2) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Queratométria:</div>
+                <div class="patient-detail-value">${patient.k1.toFixed(2)}D / ${patient.k2.toFixed(2)}D</div>
+            </div>`;
+            
+            if (patient.targetRefraction) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Refracción Objetivo:</div>
+                <div class="patient-detail-value">${patient.targetRefraction.toFixed(2)}D</div>
+            </div>`;
+            
+            if (patient.acd) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Cámara Anterior:</div>
+                <div class="patient-detail-value">${patient.acd.toFixed(2)} mm</div>
+            </div>`;
+            
+            if (patient.createdAt) html += `<div class="patient-detail-item">
+                <div class="patient-detail-label">Fecha:</div>
+                <div class="patient-detail-value">${patient.createdAt}</div>
+            </div>`;
+            
+            detailsDiv.innerHTML = html;
+            displayDiv.style.display = 'block';
+        }
+
+        // Función para aplicar filtros avanzados
+        function applyAdvancedFilters() {
+            const age = parseInt(document.getElementById('patient-age').value);
+            const axialLength = parseFloat(document.getElementById('axial-length').value);
+            
+            // Aquí puedes implementar la lógica de filtrado basada en los parámetros
+            // Por ejemplo, filtrar lentes recomendadas para cierta edad o AL
+            
+            if (age || axialLength) {
+                console.log('🎯 Aplicando filtros avanzados:', { age, axialLength });
+                
+                // Ejemplo de filtrado simple
+                currentLenses = allLenses.filter(lens => {
+                    // Aquí puedes añadir lógica personalizada
+                    // Por ahora, solo mostraremos todos los lentes
+                    return true;
+                });
+                
+                renderLenses(currentLenses);
+                updateResultsCount();
+                
+                alert(`Filtros aplicados:\nEdad: ${age || 'No especificada'}\nLongitud Axial: ${axialLength || 'No especificada'} mm`);
+            } else {
+                alert('Por favor, ingresa al menos un criterio de búsqueda avanzada');
+            }
+        }
+
+        // Función para calcular potencia IOL (ejemplo básico)
+        function calculateIOLPower() {
+            const axialLength = parseFloat(document.getElementById('axial-length').value);
+            const k1 = parseFloat(document.getElementById('k1').value);
+            const targetRefraction = parseFloat(document.getElementById('target-refraction').value);
+            const acd = parseFloat(document.getElementById('acd').value);
+            
+            if (!axialLength || !k1) {
+                alert('Para calcular la potencia, necesitas al menos Longitud Axial y K1');
+                return;
+            }
+            
+            // Fórmula SRK/T simplificada (ejemplo)
+            const A = 118.4; // Constante A para cálculo
+            const K = (k1 + (document.getElementById('k2').value ? parseFloat(document.getElementById('k2').value) : k1)) / 2;
+            
+            let predictedPower = 0;
+            
+            if (axialLength < 22) {
+                predictedPower = A - 2.5 * axialLength - 0.9 * K;
+            } else if (axialLength >= 22 && axialLength <= 24.5) {
+                predictedPower = A - 2 * axialLength - 0.9 * K;
+            } else {
+                predictedPower = A - 3 * axialLength - 0.9 * K;
+            }
+            
+            // Ajustar por refracción objetivo si está disponible
+            if (targetRefraction) {
+                predictedPower += targetRefraction * 0.67;
+            }
+            
+            // Mostrar resultado
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'calculation-result';
+            resultDiv.innerHTML = `
+                <div style="background: #e8f5e9; padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                    <h4 style="color: #27ae60; margin-bottom: 0.5rem;">🧮 Resultado del Cálculo</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <div><strong>Potencia estimada:</strong></div>
+                        <div style="font-weight: bold; font-size: 1.2rem; color: #2c3e50;">${predictedPower.toFixed(2)} D</div>
+                        <div><strong>Longitud Axial:</strong></div>
+                        <div>${axialLength.toFixed(2)} mm</div>
+                        <div><strong>K promedio:</strong></div>
+                        <div>${K.toFixed(2)} D</div>
+                        ${targetRefraction ? `<div><strong>Refracción objetivo:</strong></div><div>${targetRefraction.toFixed(2)} D</div>` : ''}
+                    </div>
+                    <small style="color: #666; font-style: italic;">Nota: Cálculo aproximado basado en fórmula SRK/T simplificada</small>
+                </div>
+            `;
+            
+            // Insertar después del panel de búsqueda avanzada
+            const advancedPanel = document.getElementById('advanced-panel');
+            const existingResult = advancedPanel.querySelector('.calculation-result');
+            if (existingResult) {
+                existingResult.remove();
+            }
+            advancedPanel.appendChild(resultDiv);
+            
+            // Filtrar lentes cercanos a la potencia calculada
+            filterByCalculatedPower(predictedPower);
+        }
+
+        function filterByCalculatedPower(targetPower) {
+            if (!targetPower) return;
+            
+            currentLenses = allLenses.filter(lens => {
+                // Aquí podrías añadir lógica más sofisticada
+                // Por ahora, solo mostramos todos
+                return true;
+            });
+            
+            // Ordenar por cercanía a la potencia objetivo (si tenemos datos de disponibilidad)
+            currentLenses.sort((a, b) => {
+                const aHasRange = a.availability.sphereRanges && a.availability.sphereRanges.length > 0;
+                const bHasRange = b.availability.sphereRanges && b.availability.sphereRanges.length > 0;
+                
+                if (aHasRange && bHasRange) {
+                    // Comparar rangos (simplificado)
+                    return 0;
+                }
+                return 0;
+            });
+            
+            renderLenses(currentLenses);
+            updateResultsCount();
+            
+            const countDiv = document.getElementById('results-count');
+            countDiv.innerHTML += `<br><span style="color: #27ae60;">🧮 Potencia objetivo calculada: ${targetPower.toFixed(2)} D</span>`;
+        }
+
+        // NUEVA FUNCIÓN: Inicializar búsqueda avanzada
+        function initializeAdvancedSearch() {
+            const toggleBtn = document.getElementById('toggle-advanced-btn');
+            const advancedPanel = document.getElementById('advanced-panel');
+            const loadPatientBtn = document.getElementById('load-patient-btn');
+            const applyAdvancedBtn = document.getElementById('apply-advanced-btn');
+            const clearAdvancedBtn = document.getElementById('clear-advanced-btn');
+            const calculatePowerBtn = document.getElementById('calculate-power-btn');
+            
+            // Toggle panel de búsqueda avanzada
+            toggleBtn.addEventListener('click', function() {
+                const isVisible = advancedPanel.style.display !== 'none';
+                advancedPanel.style.display = isVisible ? 'none' : 'block';
+                toggleBtn.innerHTML = isVisible ? 
+                    '🔍 Búsqueda Avanzada' : 
+                    '🔽 Ocultar Búsqueda Avanzada';
+            });
+            
+            // Cargar datos de pacientes
+            loadPatientBtn.addEventListener('click', async function() {
+                const patientId = prompt('Ingresa el ID o nombre del paciente:');
+                if (!patientId) return;
+                
+                // Si aún no hemos cargado los datos de pacientes, cargarlos
+                if (!patientData) {
+                    patientData = await loadPatientData();
+                }
+                
+                const patient = findPatientByIdOrName(patientId);
+                if (patient) {
+                    loadPatientIntoForm(patient);
+                } else {
+                    alert('❌ No se encontró ningún paciente con ese ID o nombre');
+                }
+            });
+            
+            // Aplicar filtros avanzados
+            applyAdvancedBtn.addEventListener('click', applyAdvancedFilters);
+            
+            // Limpiar campos avanzados
+            clearAdvancedBtn.addEventListener('click', function() {
+                document.getElementById('patient-name').value = '';
+                document.getElementById('patient-id').value = '';
+                document.getElementById('patient-age').value = '';
+                document.getElementById('axial-length').value = '';
+                document.getElementById('target-refraction').value = '';
+                document.getElementById('k1').value = '';
+                document.getElementById('k2').value = '';
+                document.getElementById('acd').value = '';
+                document.getElementById('patient-info-display').style.display = 'none';
+                
+                // Limpiar resultados de cálculo si existen
+                const advancedPanel = document.getElementById('advanced-panel');
+                const existingResult = advancedPanel.querySelector('.calculation-result');
+                if (existingResult) {
+                    existingResult.remove();
+                }
+            });
+            
+            // Calcular potencia IOL
+            calculatePowerBtn.addEventListener('click', calculateIOLPower);
+            
+            // Sugerir pacientes cuando se escribe en el campo ID
+            document.getElementById('patient-id').addEventListener('input', async function() {
+                if (!patientData) {
+                    patientData = await loadPatientData();
+                }
+                
+                const searchTerm = this.value;
+                if (searchTerm.length > 2) {
+                    const matchingPatients = patientData.filter(p => 
+                        p.id && p.id.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+                    
+                    // Aquí podrías implementar un dropdown con sugerencias
+                    if (matchingPatients.length > 0) {
+                        console.log(`Encontrados ${matchingPatients.length} pacientes coincidentes`);
+                    }
+                }
+            });
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const lenses = await loadLensesFromGitHub();
+                allLenses = lenses;
+                currentLenses = [...lenses];
+                
+                updateFilters(lenses);
+                initializeApp();
+                
+                console.log('✅ Aplicación inicializada correctamente');
+                
+            } catch (error) {
+                document.getElementById('results-count').innerHTML = `
+                    <div class="error">
+                        ❌ Error: ${error.message}
+                        <br><button class="retry-btn" onclick="location.reload()">🔄 Reintentar</button>
+                    </div>
+                `;
+            }
+        });
+
+        function initializeApp() {
+            // Evento para el switch de prioridad
+            document.getElementById('priority-switch').addEventListener('change', function() {
+                priorityHydrophobicity = this.checked;
+                const priorityText = priorityHydrophobicity ? 'HIDROFOBICIDAD' : 'ABERRACIÓN';
+                console.log(`🔀 Prioridad cambiada a: ${priorityText}`);
+                
+                // Actualizar etiquetas visuales del switch
+                const switchLabels = document.querySelectorAll('.switch-label');
+                if (priorityHydrophobicity) {
+                    switchLabels[0].style.color = '#666';
+                    switchLabels[0].style.fontWeight = 'normal';
+                    switchLabels[1].style.color = '#9b59b6';
+                    switchLabels[1].style.fontWeight = 'bold';
+                } else {
+                    switchLabels[0].style.color = '#3498db';
+                    switchLabels[0].style.fontWeight = 'bold';
+                    switchLabels[1].style.color = '#666';
+                    switchLabels[1].style.fontWeight = 'normal';
+                }
+                
+                // Si estamos en vista de comparación, recalcular recomendaciones
+                if (isSingleLensView && currentSingleLens) {
+                    console.log('🔄 Recalculando recomendaciones con nueva prioridad...');
+                    const similarZeissLenses = findSimilarZeissLenses(currentSingleLens);
+                    currentLenses = [currentSingleLens, ...similarZeissLenses];
+                    renderLenses(currentLenses);
+                    updateResultsCount();
+                    
+                    // Actualizar información de vista
+                    const viewSingleInfo = document.getElementById('view-single-info');
+                    if (viewSingleInfo.style.display !== 'none') {
+                        viewSingleInfo.querySelector('div').innerHTML = viewSingleInfo.querySelector('div').innerHTML.replace(
+                            /Prioridad (Aberración|Hidrofobicidad)/,
+                            `Prioridad ${priorityHydrophobicity ? 'Hidrofobicidad' : 'Aberración'}`
+                        );
+                    }
+                }
+            });
+
+            // Inicializar colores del switch
+            const switchLabels = document.querySelectorAll('.switch-label');
+            switchLabels[0].style.color = '#3498db';
+            switchLabels[0].style.fontWeight = 'bold';
+            switchLabels[1].style.color = '#666';
+            switchLabels[1].style.fontWeight = 'normal';
+
+            document.getElementById('search-btn').addEventListener('click', filterLenses);
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                document.getElementById('search').value = '';
+                document.getElementById('manufacturer').value = '';
+                document.getElementById('concept').value = '';
+                document.getElementById('toric').value = '';
+                filterLenses();
+            });
+
+            document.getElementById('search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') filterLenses();
+            });
+
+            document.getElementById('manufacturer').addEventListener('change', filterLenses);
+            document.getElementById('concept').addEventListener('change', filterLenses);
+            document.getElementById('toric').addEventListener('change', filterLenses);
+
+            // Inicializar búsqueda avanzada
+            initializeAdvancedSearch();
+
+            renderLenses(currentLenses);
+            updateResultsCount();
+        }
+    </script>
+</body>
+</html>
